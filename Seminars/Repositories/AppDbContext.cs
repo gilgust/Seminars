@@ -12,6 +12,7 @@ namespace Seminars.Repositories
         public AppDbContext( DbContextOptions<AppDbContext> options) :base(options){}
 
         public virtual DbSet<Seminar> Seminars { get; set; }
+        public virtual DbSet<SeminarPart> SeminarParts { get; set; }
         public DbSet<FileModel> Files{ get; set; }
     }
 }

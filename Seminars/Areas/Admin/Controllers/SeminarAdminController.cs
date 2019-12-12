@@ -21,10 +21,11 @@ namespace Seminars.Areas.Admin.Controllers
 
         public ViewResult Edit(int seminarId)
         {
-            return View(_repository.Seminars.FirstOrDefault(s => s.Id == seminarId));
+            var dbEntity = _repository.SeminarById(seminarId);
+            return View( dbEntity);
         }
 
-        [HttpPost]
+        [HttpPost]  
         public IActionResult Edit(Seminar seminar)
         {
             if (seminar.Id != 0 && !ModelState.IsValid) return View(seminar);

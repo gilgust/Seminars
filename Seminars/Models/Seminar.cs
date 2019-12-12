@@ -22,5 +22,7 @@ namespace Seminars.Models
 
         [Display(Name = "содержание")]
         public string Content { get; set; }
+
+        public IEnumerable<SeminarPart> Parts { get; set; }
     }
 }

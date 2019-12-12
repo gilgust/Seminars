@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
+using Microsoft.EntityFrameworkCore;
 using Seminars.Models;
 
 namespace Seminars.Repositories
@@ -60,7 +61,33 @@ namespace Seminars.Repositories
             }
         }
 
-        public Seminar SeminarBySlug(string slug) =>_context.Seminars.FirstOrDefault(s => s.Slug == slug);
-        
+        public Seminar SeminarBySlug(string slug) 
+        {
+            var dbEntity = _context.Seminars
+                .Include(s => s.Parts)
+                .FirstOrDefault(s => s.Slug == slug);
+
+            return dbEntity;
+        }
+            
+        public Seminar SeminarById(int id)
+        {
+            var dbEntity = _context.Seminars
+                .Include(s => s.Parts)
+                .FirstOrDefault(s => s.Id == id);
+
+            return dbEntity;
+        }
+
+        //private List<SeminarPart> SeminarPartToTree(IEnumerable<SeminarPart> parts, int? parantPatrId )
+        //{
+        //    var result = new List<SeminarPart>();
+        //    foreach (var part in parts)
+        //    {
+                
+        //    }
+
+        //    return null;
+        //}
     }
 }

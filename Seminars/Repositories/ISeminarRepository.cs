@@ -11,9 +11,9 @@ namespace Seminars.Repositories
         IQueryable<Seminar> Seminars { get; }
         void SaveSeminar(Seminar seminar);
         Seminar DeleteSeminar(int seminarId);
-
+        Seminar SeminarBySlug(string slug);
+        Seminar SeminarById(int id);
         string AvailableSlug(int seminarId, string slug);
 
-        Seminar SeminarBySlug(string slug);
     }
 }
