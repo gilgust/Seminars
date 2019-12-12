@@ -1,0 +1,64 @@
+﻿@model List<Seminar>
+
+<div class="container-fluid mt-5">
+
+    @if (Model.Any())
+    {
+        <div class="container-fluid bg-white">
+            <!--Card content-->
+            <div class="col-12 pb-2" >
+                <span class="table-add float-right m-2">
+                    <a asp-action="Create" class="text-success">
+                        <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
+                    </a>
+                </span>
+                <!-- Table  -->
+                <table class="table table-hover btn-table table-responsive-md table-striped text-center">
+                    <!-- Table head -->
+                    <thead class="blue-grey lighten-4">
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>slug</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <!-- Table head -->
+                    <!-- Table body -->
+                    <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row">@item.Id</th>
+                            <td>
+                                <a asp-action="Edit" asp-route-seminarId="@item.Id">@item.Name</a>
+                            </td>
+                            <td>@item.Slug</td>
+                            <td>
+                                <form asp-action="Delete" method="post">
+                                    <a class="btn btn-success btn-sm m-0" asp-action="Edit" asp-route-seminarId="@item.Id">
+                                        <i class="fa fa-edit"></i>
+                                        Edit
+                                    </a>
+                                    <input type="hidden" name="seminarId" value="@item.Id"/>
+                                    <button type="submit" class="btn btn-danger btn-sm m-0">
+                                        <i class="fa fa-trash"></i>
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                    <!-- Table body -->
+                </table>
+                <!-- Table  -->
+            </div>
+        </div>
+    }
+    else
+    {
+        <h2>No one seminar</h2>
+    }
+
+</div>

@@ -1,0 +1,197 @@
+﻿@model Seminar
+@{
+    ViewBag.Title = "Edit Product";
+    Layout = "_AdminLayout";
+}
+@section HeadSection{
+    <link rel="stylesheet" asp-href-include="~/lib/froala-wysiwyg-editor/css/froala_editor.pkgd.min.css" />
+}
+
+<form asp-action="Edit" method="post" class="pt-4">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <!--Accordion wrapper-->
+    <div class="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
+
+        <!-- Accordion card -->
+        <div class="card">
+            <!-- Card header -->
+            <div class="card-header" role="tab" id="headingTwo1">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseTwo1"
+                   aria-expanded="false" aria-controls="collapseTwo1">
+                    <h5 class="mb-0">
+                        <label asp-for="Slug"></label>
+                        <i class="fas fa-angle-down rotate-icon"></i>
+                    </h5>
+                </a>
+            </div>
+            <!-- Card body -->
+            <div id="collapseTwo1" class="collapse" role="tabpanel" aria-labelledby="headingTwo1"
+                 data-parent="#accordionEx1">
+                <div class="card-body">
+                    <div class="form-group">
+                        <input asp-for="Slug" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Accordion card -->
+        <!-- Accordion card -->
+        <div class="card">
+            <!-- Card header -->
+            <div class="card-header" role="tab" id="headingTwo2">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseTwo21"
+                   aria-expanded="false" aria-controls="collapseTwo21">
+                    <h5 class="mb-0">
+                        <label asp-for="Excerpt"></label>
+                        <i class="fas fa-angle-down rotate-icon"></i>
+                    </h5>
+                </a>
+            </div>
+
+            <!-- Card body -->
+            <div id="collapseTwo21" class="collapse" role="tabpanel" aria-labelledby="headingTwo21"
+                 data-parent="#accordionEx1">
+                <div class="card-body">
+                    <div class="form-group">
+                        <textarea asp-for="Excerpt" class="form-control" rows="5">@Model.Excerpt</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Accordion card -->
+        <!-- Accordion card -->
+        <div class="card">
+            <!-- Card header -->
+            <div class="card-header" role="tab" id="headingThree31">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseThree31"
+                   aria-expanded="false" aria-controls="collapseThree31">
+                    <h5 class="mb-0">
+                        <label asp-for="Content"></label>
+                        <i class="fas fa-angle-down rotate-icon"></i>
+                    </h5>
+                </a>
+            </div>
+
+            <!-- Card body -->
+            <div id="collapseThree31" class="collapse" role="tabpanel" aria-labelledby="headingThree31"
+                 data-parent="#accordionEx1">
+                <div class="card-body">
+                    <div class="form-group">
+                        <textarea id="edit" name="content" class="form-control">
+                            @if (!String.IsNullOrWhiteSpace(Model.Content))
+                            {
+                                @Html.Raw(Model.Content)
+                            }
+                    </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Accordion card -->
+    </div>
+    <!-- Accordion wrapper -->
+
+    <div class="text-center">
+        <button class="btn btn-primary" type="submit">Save</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+
+</form>
+
+
+@section FooterScript
+{
+    <script type="text/javascript" src="~/lib/froala-wysiwyg-editor/js/froala_editor.pkgd.min.js"></script>
+    <script src="~/lib/jquery-validate/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(function () {
+            $('#edit').froalaEditor({
+                    imageUploadURL: '/FroalaApi/UploadImage',
+                    fileUploadURL: '/FroalaApi/UploadFile',
+                    imageManagerLoadURL: '/FroalaApi/LoadImages',
+                    imageManagerDeleteURL: "/FroalaApi/DeleteImage",
+                    imageManagerDeleteMethod: "POST",
+                    // Introduce the Video Upload Buttons
+                    videoInsertButtons: ['videoBack', '|', 'videoByURL', 'videoEmbed', 'videoUpload'],
+                    // Set the video upload URL.
+                    videoUploadURL: '/FroalaApi/UploadVideo',
+                    // Set request type.
+                    videoUploadMethod: 'POST'
+                })
+                // Catch image removal from the editor.
+                .on('froalaEditor.image.removed',
+                    function(e, editor, $img) {
+                        $.ajax({
+                                // Request method.
+                                method: "POST",
+
+                                // Request URL.
+                                url: "/FroalaApi/DeleteImage",
+
+                                // Request params.
+                                data: {
+                                    src: $img.attr('src')
+                                }
+                            })
+                            .done(function(data) {
+                                console.log('image was deleted');
+                            })
+                            .fail(function(err) {
+                                console.log('image delete problem: ' + JSON.stringify(err));
+                            });
+                    })
+                // Catch image removal from the editor.
+                .on('froalaEditor.video.removed',
+                    function(e, editor, $vid) {
+                        $.ajax({
+                                // Request method.
+                                method: "POST",
+
+                                // Request URL.
+                                url: "/FroalaApi/DeleteVideo",
+
+                                // Request params.
+                                data: {
+                                    src: $vid.attr('src')
+                                }
+                            })
+                            .done(function(data) {
+                                console.log('video was deleted');
+                            })
+                            .fail(function(err) {
+                                console.log('video delete problem: ' + JSON.stringify(err));
+                            });
+                    })
+                // Catch image removal from the editor.
+                .on('froalaEditor.file.unlink',
+                    function(e, editor, link) {
+                        $.ajax({
+                                // Request method.
+                                method: "POST",
+
+                                // Request URL.
+                                url: "/FroalaApi/DeleteFile",
+
+                                // Request params.
+                                data: {
+                                    src: link.getAttribute('href')
+                                }
+                            })
+                            .done(function(data) {
+                                console.log('file was deleted');
+                            })
+                            .fail(function(err) {
+                                console.log('file delete problem: ' + JSON.stringify(err));
+                            });
+                    });
+
+
+        });
+    </script>
+}

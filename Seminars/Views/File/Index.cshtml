@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Seminars.Models.FileModel>
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Добавление файла";
+}
+
+<h3>Выберите файл для загрузки</h3>
+<form asp-action="AddFile" asp-controller="File" method="post" enctype="multipart/form-data">
+    <input type="file" name="uploadedFile"/>
+    <button type="submit">Загрузить</button>
+</form>
+
+<h3>Все файлы</h3>
+@foreach (var f in Model)
+{
+    <div>
+        <img src="@Url.Content(f.Path)" alt="@f.Name" />
+    </div>
+}

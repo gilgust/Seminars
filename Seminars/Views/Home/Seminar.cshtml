@@ -1,0 +1,56 @@
+﻿@model Seminar
+
+    <div class="container">
+        <section class="card wow fadeIn" style="background-image: url(https://mdbootstrap.com/img/Photos/Others/gradient1.jpg);">
+
+            <!-- Content -->
+            <div class="card-body text-white text-center ">
+
+                <h1>
+                    <strong>@Model.Name</strong>
+                </h1>
+
+            </div>
+            <!-- Content -->
+        </section>
+        <!--Section: Post-->
+        <section class="mt-4">
+
+            <!--Grid row-->
+            <div class="row">
+
+                <!--Grid column-->
+                <div class="col-12">
+
+                    <!--Featured Image-->
+                    <div class="card mb-4 wow fadeIn">
+
+                        <img src="https://mdbootstrap.com/img/Photos/Slides/img%20(144).jpg" class="img-fluid" alt="">
+
+                    </div>
+                    <!--/.Featured Image-->
+                    <!--Card-->
+                    <div class="card mb-4 wow fadeIn">
+
+                        <!--Card content-->
+                        <div class="card-body">
+                            @Html.Raw(Model.Content)
+                        </div>
+
+                    </div>
+                    <!--/.Card-->
+
+
+
+                </div>
+                <!--Grid column-->
+                <!--Grid column-->
+                <!--Grid column-->
+
+            </div>
+            <!--Grid row-->
+
+        </section>
+        <!--Section: Post-->
+
+    </div>
