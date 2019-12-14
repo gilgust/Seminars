@@ -67,6 +67,8 @@ namespace Seminars.Repositories
                 .Include(s => s.Parts)
                 .FirstOrDefault(s => s.Slug == slug);
 
+            dbEntity.Parts = SeminarPartsToTree(dbEntity.Parts);
+
             return dbEntity;
         }
             
@@ -76,18 +78,24 @@ namespace Seminars.Repositories
                 .Include(s => s.Parts)
                 .FirstOrDefault(s => s.Id == id);
 
+            dbEntity.Parts = SeminarPartsToTree(dbEntity.Parts);
+
             return dbEntity;
         }
 
-        //private List<SeminarPart> SeminarPartToTree(IEnumerable<SeminarPart> parts, int? parantPatrId )
-        //{
-        //    var result = new List<SeminarPart>();
-        //    foreach (var part in parts)
-        //    {
-                
-        //    }
+        private List<SeminarPart> SeminarPartsToTree(IEnumerable<SeminarPart> parts, int parantPartId = 0)
+        {
+            var result = parts.Where(p => p.ParentPartId == parantPartId);
 
-        //    return null;
-        //}
+            if (!parts.Any(p => p.ParentPartId == parantPartId))
+                return null;
+
+            foreach (var part in parts)
+            {
+                part.Parts = SeminarPartsToTree(parts, part.ParentPartId);
+            }
+
+            return result.ToList();
+        }
     }
 }
