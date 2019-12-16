@@ -10,15 +10,12 @@ namespace Seminars.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int Order { get; set; }
         public int SeminarId { get; set; }
+        public int ParentPartId { get; set; }
         public Seminar Seminar { get; set; }
-        public IEnumerable<SeminarChapter> Chapters{ get; set; }
-
-        public SeminarPart()
-        {
-            Chapters = new List<SeminarChapter>();
-        }
+        [ForeignKey("ParentPartId")]
+        public SeminarPart Part { get; set; }
+        public IEnumerable<SeminarPart> Parts { get; set; }
 
     }
 }

@@ -19,11 +19,15 @@
       "destination": "wwwroot/lib/twitter-bootstrap/"
     },
     {
+<<<<<<< HEAD
       "library": "mdbootstrap@4.10.1",
       "destination": "wwwroot/lib/mdbootstrap/"
     },
     {
       "library": "popper.js@1.14.7",
+=======
+      "library": "popper.js@1.15.0",
+>>>>>>> parent of 66611be... remove front templates
       "destination": "wwwroot/lib/popper.js/"
     }
   ,

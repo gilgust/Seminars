@@ -61,18 +61,41 @@ namespace Seminars.Repositories
             }
         }
 
-        public Seminar SeminarBySlug(string slug) =>
-            _context.Seminars
-                .Where(s => s.Slug == slug)
+        public Seminar SeminarBySlug(string slug) 
+        {
+            var dbEntity = _context.Seminars
                 .Include(s => s.Parts)
-                .ThenInclude(p => p.Chapters)
-                .FirstOrDefault();
+                .FirstOrDefault(s => s.Slug == slug);
 
-        public Seminar SeminarById(int id) =>
-            _context.Seminars
-                .Where(s => s.Id == id)
+            dbEntity.Parts = SeminarPartsToTree(dbEntity.Parts);
+
+            return dbEntity;
+        }
+            
+        public Seminar SeminarById(int id)
+        {
+            var dbEntity = _context.Seminars
                 .Include(s => s.Parts)
-                .ThenInclude(p => p.Chapters)
                 .FirstOrDefault(s => s.Id == id);
+
+            dbEntity.Parts = SeminarPartsToTree(dbEntity.Parts);
+
+            return dbEntity;
+        }
+
+        private List<SeminarPart> SeminarPartsToTree(IEnumerable<SeminarPart> parts, int parantPartId = 0)
+        {
+            var result = parts.Where(p => p.ParentPartId == parantPartId);
+
+            if (!parts.Any(p => p.ParentPartId == parantPartId))
+                return null;
+
+            foreach (var part in parts)
+            {
+                part.Parts = SeminarPartsToTree(parts, part.ParentPartId);
+            }
+
+            return result.ToList();
+        }
     }
 }

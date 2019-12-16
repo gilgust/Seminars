@@ -29,12 +29,15 @@
     <Folder Include="wwwroot\lib\jquery-validation-unobtrusive\" />
     <Folder Include="wwwroot\lib\jquery\" />
     <Folder Include="wwwroot\Files\" />
+<<<<<<< HEAD
     <Folder Include="wwwroot\lib\mdbootstrap\css\" />
     <Folder Include="wwwroot\lib\mdbootstrap\font\roboto\" />
     <Folder Include="wwwroot\lib\mdbootstrap\img\overlays\" />
     <Folder Include="wwwroot\lib\mdbootstrap\img\svg\" />
     <Folder Include="wwwroot\lib\mdbootstrap\js\" />
     <Folder Include="wwwroot\lib\wow\" />
+=======
+>>>>>>> parent of 66611be... remove front templates
   </ItemGroup>
 
   <ItemGroup>

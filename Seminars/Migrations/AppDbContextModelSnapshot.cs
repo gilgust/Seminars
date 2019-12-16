@@ -49,14 +49,12 @@ namespace Seminars.Migrations
                     b.ToTable("Seminars");
                 });
 
-            modelBuilder.Entity("Seminars.Models.SeminarChapter", b =>
+            modelBuilder.Entity("Seminars.Models.SeminarPart", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
-
-                    b.Property<int>("Order");
 
                     b.Property<int>("ParentPartId");
 
@@ -66,37 +64,18 @@ namespace Seminars.Migrations
 
                     b.HasIndex("ParentPartId");
 
-                    b.ToTable("SeminarChapter");
-                });
-
-            modelBuilder.Entity("Seminars.Models.SeminarPart", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("Order");
-
-                    b.Property<int>("SeminarId");
-
-                    b.HasKey("Id");
-
                     b.HasIndex("SeminarId");
 
                     b.ToTable("SeminarParts");
                 });
 
-            modelBuilder.Entity("Seminars.Models.SeminarChapter", b =>
-                {
-                    b.HasOne("Seminars.Models.SeminarPart", "Part")
-                        .WithMany("Chapters")
-                        .HasForeignKey("ParentPartId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Seminars.Models.SeminarPart", b =>
                 {
+                    b.HasOne("Seminars.Models.SeminarPart", "Part")
+                        .WithMany("Parts")
+                        .HasForeignKey("ParentPartId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Seminars.Models.Seminar", "Seminar")
                         .WithMany("Parts")
                         .HasForeignKey("SeminarId")
