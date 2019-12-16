@@ -21,6 +21,10 @@
     {
       "library": "popper.js@1.15.0",
       "destination": "wwwroot/lib/popper.js/"
+    },
+    {
+      "library": "mdbootstrap@4.10.1",
+      "destination": "wwwroot/lib/mdbootstrap/"
     }
   ]
 }

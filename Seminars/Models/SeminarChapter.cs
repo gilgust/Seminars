@@ -6,19 +6,15 @@ using System.Threading.Tasks;
 
 namespace Seminars.Models
 {
-    public class SeminarPart
+    public class SeminarChapter
     {
+
         public int Id { get; set; }
         public string Name { get; set; }
         public int Order { get; set; }
         public int SeminarId { get; set; }
-        public Seminar Seminar { get; set; }
-        public IEnumerable<SeminarChapter> Chapters{ get; set; }
-
-        public SeminarPart()
-        {
-            Chapters = new List<SeminarChapter>();
-        }
-
+        public int ParentPartId { get; set; }
+        [ForeignKey("ParentPartId")]
+        public SeminarPart Part { get; set; }
     }
 }
