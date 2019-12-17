@@ -24,5 +24,10 @@ namespace Seminars.Models
         public string Content { get; set; }
 
         public IEnumerable<SeminarPart> Parts { get; set; }
+
+        public Seminar()
+        {
+            Parts = new List<SeminarPart>();
+        }
     }
 }

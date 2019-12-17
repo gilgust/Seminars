@@ -13,11 +13,8 @@ namespace Seminars.Controllers
         private readonly ISeminarRepository _seminars;
 
         public HomeController(ISeminarRepository context) => _seminars = context;
-        public IActionResult Index()
-        {
-            var seminars = _seminars.Seminars;
-            return View( seminars );
-        }
+        public IActionResult Index() => View(_seminars.Seminars.ToList());
+        
 
         public IActionResult Seminar(string slug)
         {

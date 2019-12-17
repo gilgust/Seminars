@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -7,43 +7,35 @@
     <title>Material Design Bootstrap</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
-    <!-- Bootstrap core CSS -->
-    <link asp-href-include="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Material Design Bootstrap -->
-    <link asp-href-include="~/admin/css/mdb.min.css" rel="stylesheet">
-    <!-- Your custom styles (optional) -->
-    <link asp-href-include="~/admin/css/style.css" rel="stylesheet">
+    <link asp-href-include="~/css/bootstrap.css" rel="stylesheet">
+    <link asp-href-include="~/css/mdb.min.css" rel="stylesheet">
+    <link asp-href-include="~/css/style.css" rel="stylesheet">
 
 
     @RenderSection("HeadSection", false)
 </head>
 
 <body class="grey lighten-3">
+@Html.Partial("Header")
+<!--Main layout-->
+<main class="pt-5 mx-lg-5">
+    @RenderBody()
+</main>
+<!--Main layout-->
+<script type="text/javascript" src="~/lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="~/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="~/js/popper.min.js"></script>
+<script type="text/javascript" src="~/js/mdb.min.js"></script>
+<script type="text/javascript">
+    new WOW().init();
+    $("#toggles-sidebar-btn").on('click',
+        function () {
+            $('.toggles-sidebar-icon').toggleClass('toggles-sidebar-icon_active');
+            $('.sidebar-fixed').toggleClass('sidebar-fixed_active');
+        });
+</script>
 
-    @Html.Partial("Header")
-
-    <!--Main layout-->
-    <main class="pt-5 mx-lg-5">
-
-        @RenderBody()
-
-    </main>
-    <!--Main layout-->
-    <!-- SCRIPTS -->
-    <!-- JQuery -->
-    <script type="text/javascript" src="~/admin/js/jquery-3.4.1.min.js"></script>
-    <!-- Bootstrap core JavaScript -->
-    <script type="text/javascript" src="~/admin/js/bootstrap.min.js"></script>
-    <!-- Bootstrap tooltips -->
-    <script type="text/javascript" src="~/admin/js/popper.min.js"></script>
-    <!-- MDB core JavaScript -->
-    <script type="text/javascript" src="~/admin/js/mdb.min.js"></script>
-    <!-- Initializations -->
-    <script type="text/javascript">
-        new WOW().init();
-    </script>
-
-    @RenderSection("FooterScript", false)
+@RenderSection("FooterScript", false)
 
 </body>
 </html>

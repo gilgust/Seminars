@@ -11,8 +11,7 @@
     <input type="hidden" asp-for="Id" />
 
     <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
+        <input asp-for="Name" class="form-control" placeholder="name"/>
     </div>
     <!--Accordion wrapper-->
     <div class="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
@@ -23,10 +22,8 @@
             <div class="card-header" role="tab" id="headingTwo1">
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseTwo1"
                    aria-expanded="false" aria-controls="collapseTwo1">
-                    <h5 class="mb-0">
-                        <label asp-for="Slug"></label>
-                        <i class="fas fa-angle-down rotate-icon"></i>
-                    </h5>
+                    <label class="mb-0" asp-for="Slug"></label>
+                    <i class="fas fa-angle-down rotate-icon"></i>
                 </a>
             </div>
             <!-- Card body -->
@@ -46,10 +43,8 @@
             <div class="card-header" role="tab" id="headingTwo2">
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseTwo21"
                    aria-expanded="false" aria-controls="collapseTwo21">
-                    <h5 class="mb-0">
-                        <label asp-for="Excerpt"></label>
-                        <i class="fas fa-angle-down rotate-icon"></i>
-                    </h5>
+                    <label class="mb-0" asp-for="Excerpt"></label>
+                    <i class="fas fa-angle-down rotate-icon"></i>
                 </a>
             </div>
 
@@ -70,10 +65,8 @@
             <div class="card-header" role="tab" id="headingThree31">
                 <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseThree31"
                    aria-expanded="false" aria-controls="collapseThree31">
-                    <h5 class="mb-0">
-                        <label asp-for="Content"></label>
-                        <i class="fas fa-angle-down rotate-icon"></i>
-                    </h5>
+                    <label class="mb-0" asp-for="Content"></label>
+                    <i class="fas fa-angle-down rotate-icon"></i>
                 </a>
             </div>
 
@@ -99,26 +92,113 @@
     <!-- Accordion wrapper -->
 
     <div class="text-center">
-        <button class="btn btn-primary" type="submit">Save</button>
-        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        <button class="btn btn-primary btn-sm" type="submit">Save</button>
+        <a asp-action="Index" class="btn btn-info btn-sm">Cancel</a>
     </div>
 
 </form>
 
 <div class="card">
-    <div class="card-header">
+    <div class="card-header d-flex flex-row justify-content-between">
         <h4>
             Parts
         </h4>
 
+        <button id="addPart" class="btn btn-outline-success btn-rounded btn-sm">
+            <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
+        </button>
+
+    </div>
+    <div class="card-body" id="partsWrapper">
+        @if (Model != null || Model.Parts.Any())
+        {
+            foreach (var part in Model.Parts)
+            {
+                @Html.Partial("EditSeminarPart", part)
+            }
+
+        }
     </div>
 </div>
+<button type="button" class="btn btn-primary btn-sm waves-effect waves-light" data-toggle="modal" data-target="#centralModalFluidSuccessDemo">
+    Fluid
+</button>
+@* modal window *@
+<div class="modal fade" id="centralModalFluidSuccessDemo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-fluid modal-notify modal-success" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <p class="heading lead">Modal Success</p>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
+            </div>
+
+            <!--Body-->
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="fas fa-check fa-4x mb-3 animated rotateIn"></i>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit
+                        iusto nulla
+                        aperiam blanditiis ad consequatur in dolores culpa, dignissimos,
+                        eius
+                        non possimus fugiat. Esse ratione fuga, enim, ab officiis totam.
+                    </p>
+                </div>
+                <ul class="list-group z-depth-0">
+                    <li class="list-group-item justify-content-between">
+                        Cras justo odio
+                        <span class="badge badge-primary badge-pill">14</span>
+                    </li>
+                    <li class="list-group-item justify-content-between">
+                        Dapibus ac facilisis in
+                        <span class="badge badge-primary badge-pill">2</span>
+                    </li>
+                    <li class="list-group-item justify-content-between">
+                        Morbi leo risus
+                        <span class="badge badge-primary badge-pill">1</span>
+                    </li>
+                    <li class="list-group-item justify-content-between">
+                        Cras justo odio
+                        <span class="badge badge-primary badge-pill">14</span>
+                    </li>
+                    <li class="list-group-item justify-content-between">
+                        Dapibus ac facilisis in
+                        <span class="badge badge-primary badge-pill">2</span>
+                    </li>
+                    <li class="list-group-item justify-content-between">
+                        Morbi leo risus
+                        <span class="badge badge-primary badge-pill">1</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer">
+                <a role="button" class="btn btn-success">
+                    save
+                </a>
+                <a role="button" class="btn btn-outline-success waves-effect" data-dismiss="modal">
+                    cancel
+                </a>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+@* modal window *@
 
 @section FooterScript
 {
     <script type="text/javascript" src="~/lib/froala-wysiwyg-editor/js/froala_editor.pkgd.min.js"></script>
     <script src="~/lib/jquery-validate/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/saveSeminarPart.js"></script>
     <script>
         $(function () {
             $('#edit').froalaEditor({
@@ -203,7 +283,16 @@
 
 
         });
+
+        $('#centralModalFluidSuccessDemo').on('hide.bs.modal',
+            function() {
+                alert("hide.bs.modal");
+            });
+
+        $('#centralModalFluidSuccessDemo').on('Hidden.bs.modal',
+            function() {
+                alert("hidden.bs.modal");
+            });
+
     </script>
-    
-   
 }
