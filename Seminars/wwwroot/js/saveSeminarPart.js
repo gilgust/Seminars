@@ -1,4 +1,33 @@
-﻿$("saveSeminarPart").submit( "saveSeminarPartHandler");
+﻿$("saveSeminarPart").submit("saveSeminarPartHandler");
+$("#addPart").on("click",
+    function () {
+        console.log('add part');
+        $('#modal-title').text("New part");
+        $("#part-name").val('');
+        $("#part-order").val('');
+        $('#centralModalFluidSuccessDemo').modal('show');
+
+    });
+
+$("#centralModalFluidSuccessDemo").on('show.bs.modal', function () {
+    let seminarId = $("#Id").val();
+    alert("show");
+});
+
+$('#centralModalFluidSuccessDemo').on('hide.bs.modal',
+    function () {
+        alert("hide");
+    });
+
+$('#centralModalFluidSuccessDemo').on('hidden.bs.modal',
+    function () {
+        alert("hidden");
+    });
+
+$('#modalSavePart').on('click',
+    function () {
+        $('#centralModalFluidSuccessDemo').modal('hide');
+    });
 
 function saveSeminarPartHandler(e) {
     e.preventDefault();
