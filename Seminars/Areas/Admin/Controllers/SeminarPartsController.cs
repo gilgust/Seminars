@@ -16,40 +16,32 @@ namespace Seminars.Areas.Admin.Controllers
     {
         private readonly AppDbContext _context;
 
-        public SeminarPartsController(AppDbContext context)
-        {
-            _context = context;
-        }
+        public SeminarPartsController(AppDbContext context) => _context = context;
 
         // GET: api/SeminarParts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SeminarPart>>> GetSeminarParts()
-        {
-            return await _context.SeminarParts.ToListAsync();
-        }
+        public async Task<ActionResult<IEnumerable<SeminarPart>>> GetSeminarParts() => await _context.SeminarParts.ToListAsync();
+        
 
-        // GET: api/SeminarParts/5
+        //GET: api/SeminarParts/5
         [HttpGet("{id}")]
         public async Task<ActionResult<SeminarPart>> GetSeminarPart(int id)
         {
             var seminarPart = await _context.SeminarParts.FindAsync(id);
 
             if (seminarPart == null)
-            {
                 return NotFound();
-            }
 
             return seminarPart;
         }
+
 
         // PUT: api/SeminarParts/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSeminarPart(int id, SeminarPart seminarPart)
         {
             if (id != seminarPart.Id)
-            {
                 return BadRequest();
-            }
 
             _context.Entry(seminarPart).State = EntityState.Modified;
 
@@ -60,13 +52,9 @@ namespace Seminars.Areas.Admin.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 if (!SeminarPartExists(id))
-                {
                     return NotFound();
-                }
                 else
-                {
                     throw;
-                }
             }
 
             return NoContent();
@@ -82,15 +70,14 @@ namespace Seminars.Areas.Admin.Controllers
             return CreatedAtAction("GetSeminarPart", new { id = seminarPart.Id }, seminarPart);
         }
 
+
         // DELETE: api/SeminarParts/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<SeminarPart>> DeleteSeminarPart(int id)
         {
             var seminarPart = await _context.SeminarParts.FindAsync(id);
             if (seminarPart == null)
-            {
                 return NotFound();
-            }
 
             _context.SeminarParts.Remove(seminarPart);
             await _context.SaveChangesAsync();
@@ -98,9 +85,6 @@ namespace Seminars.Areas.Admin.Controllers
             return seminarPart;
         }
 
-        private bool SeminarPartExists(int id)
-        {
-            return _context.SeminarParts.Any(e => e.Id == id);
-        }
+        private bool SeminarPartExists(int id) => _context.SeminarParts.Any(e => e.Id == id);
     }
 }

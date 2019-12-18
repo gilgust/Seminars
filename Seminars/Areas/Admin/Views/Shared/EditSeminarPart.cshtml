@@ -1,5 +1,10 @@
 ﻿@model SeminarPart
-    <div class="seminar-part" data-seminar-id="@Model.SeminarId">
-        <div>@Model.Order</div>
-        <div>@Model.Name</div>
+<div class="seminar-part" data-seminar-id="@Model.SeminarId" data-id="@Model.Id">
+    <div id="order-part-@Model.Id">@Model.Order</div>
+    <div id="name-part-@Model.Id">@Model.Name</div>
+    
+    <div class="btn-group">
+        <button type="button" class="edit-part-btn btn btn-sm btn-primary">edit</button>
+        <button type="button" class="delete-part-btn btn btn-sm btn-danger">delete</button>
+    </div>
 </div>

@@ -1,27 +1,50 @@
-﻿$("saveSeminarPart").submit("saveSeminarPartHandler");
-$("#addPart").on("click",
+﻿$("#addPart").on("click",
     function () {
-        console.log('add part');
         $('#modal-title').text("New part");
         $("#part-name").val('');
         $("#part-order").val('');
         $('#centralModalFluidSuccessDemo').modal('show');
-
     });
+
+$(".edit-part-btn").on("click",
+    function () {
+        let wrapper = $(this).parent().parent();
+        let partId = $(wrapper).data("id");
+        let partOrder = $(wrapper).find("#order-part-" + partId).text();
+        let partName = $(wrapper).find("#name-part-" + partId).text();
+        //console.log("wrapper :", wrapper );
+        //console.log("partId :", partId );
+        //console.log("partOrder :", partOrder);
+        //console.log("partName :", partName );
+
+        $('#modal-title').text(partName);
+        $("#part-name").val(partName);
+        $("#part-order").val(partOrder);
+        $("#new-part-id").val(partId);
+        $('#centralModalFluidSuccessDemo').modal('show');
+    });
+
+$(".delete-part-btn").on("click",
+    function () {
+        console.log("delete");
+    });
+
 
 $("#centralModalFluidSuccessDemo").on('show.bs.modal', function () {
     let seminarId = $("#Id").val();
-    alert("show");
+    $('#parent-of-part').val(seminarId);
+    //alert("show");
 });
 
 $('#centralModalFluidSuccessDemo').on('hide.bs.modal',
     function () {
-        alert("hide");
+        //alert("hide");
     });
 
 $('#centralModalFluidSuccessDemo').on('hidden.bs.modal',
     function () {
-        alert("hidden");
+        $("#saveSeminarPart").trigger("reset");
+        $("#new-part-id").val(0);
     });
 
 $('#modalSavePart').on('click',
@@ -29,31 +52,66 @@ $('#modalSavePart').on('click',
         $('#centralModalFluidSuccessDemo').modal('hide');
     });
 
-function saveSeminarPartHandler(e) {
-    e.preventDefault();
-    let id = this.elements["Id"].value;
-    let seminarId = this.elements["SeminarId"].value;
-    let name = this.elements["Name"].value;
-    let order = this.elements["Order"].value;
+$("#saveSeminarPart").on("submit",
+    function(e) {
+        e.preventDefault();
+        let id = this.elements["Id"].value;
+        let seminarId = this.elements["SeminarId"].value;
+        let name = this.elements["Name"].value;
+        let order = this.elements["Order"].value;
 
-    if (id === 0) {
-        CreateSeminarPart(seminarId, name, order);
-    }
-}
-
-function CreateSeminarPart(seminarId, name, order) {
-    $.ajax({
-        url: "api/SeminarParts/",
-        type: "application/json",
-        method: "POST",
-        data: JSON.stringify({
-            seminarId: seminarId,
-            name: name,
-            order: order
-        }),
-        success: function(data) {
-            console.log(data);
+        if (Number(id) === 0) {
+            createSeminarPart(seminarId, name, order);
+        } else {
+            editSeminarPart(id, seminarId, name, order);
         }
     });
+
+function createSeminarPart(seminarId, name, order) {
+    $.ajax({
+            url: "/api/SeminarParts",
+            contentType : "application/json",
+            method: "POST",
+            data: JSON.stringify({
+                seminarId: seminarId,
+                name: name,
+                order: order
+            })
+        })
+        .done(function(data) {
+
+            console.log(data);
+        })
+        .fail(function(data) {
+            console.log(data);
+        });
 }
 
+
+function editSeminarPart(id, seminarId, name, order) {
+    $.ajax({
+            url: "/api/SeminarParts",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            contentType: "application/json",
+            method: "PUT",
+            data: JSON.stringify({
+                id: id,
+                seminarPart: {
+                    id: id,
+                    name: name,
+                    order: order,
+                    seminarId: seminarId
+                }
+            })
+        })
+        .done(function (data) {
+
+            console.log(data);
+        })
+        .fail(function (data) {
+            console.log(data);
+        });
+}

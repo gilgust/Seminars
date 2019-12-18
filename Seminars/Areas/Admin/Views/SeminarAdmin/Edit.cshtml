@@ -114,9 +114,10 @@
             <!--Body-->
             <form action="" method="post" id="saveSeminarPart" >
                 <div class="modal-body">
-                    <input type="hidden" value="0" name="Id" />
+                    <input type="hidden" name="Id" id="new-part-id" value="0"  />
+                    <input type="hidden" name="SeminarId" id="parent-of-part" value="0"  />
                     <div class="md-form mb-5">
-                        <input type="text" value="azaza" id="part-name" name="Name" class="form-control">
+                        <input type="text" name="Name" value="azaza" id="part-name"  class="form-control">
                         <label for="Name">Part name</label>
                     </div>
                     <div class="md-form mb-5">
