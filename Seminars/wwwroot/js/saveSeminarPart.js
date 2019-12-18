@@ -90,21 +90,15 @@ function createSeminarPart(seminarId, name, order) {
 
 function editSeminarPart(id, seminarId, name, order) {
     $.ajax({
-            url: "/api/SeminarParts",
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("XSRF-TOKEN",
-                    $('input:hidden[name="__RequestVerificationToken"]').val());
-            },
+            url: "/api/SeminarParts/" + id,
             contentType: "application/json",
             method: "PUT",
             data: JSON.stringify({
-                id: id,
-                seminarPart: {
                     id: id,
-                    name: name,
-                    order: order,
-                    seminarId: seminarId
-                }
+                    Name: name,
+                    Order: order,
+                    SeminarId: seminarId
+                
             })
         })
         .done(function (data) {

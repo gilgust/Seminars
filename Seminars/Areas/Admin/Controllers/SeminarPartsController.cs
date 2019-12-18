@@ -38,7 +38,7 @@ namespace Seminars.Areas.Admin.Controllers
 
         // PUT: api/SeminarParts/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSeminarPart(int id, SeminarPart seminarPart)
+        public async Task<IActionResult> PutSeminarPart(int id,  [FromBody] SeminarPart seminarPart)
         {
             if (id != seminarPart.Id)
                 return BadRequest();
