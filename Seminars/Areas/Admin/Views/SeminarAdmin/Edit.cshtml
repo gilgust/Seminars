@@ -7,72 +7,80 @@
     <link rel="stylesheet" asp-href-include="~/lib/froala-wysiwyg-editor/css/froala_editor.pkgd.min.css" />
 }
 
-<form asp-action="Edit" method="post" class="pt-4">
+<form asp-action="Edit" method="post" class="my-4">
     <input type="hidden" asp-for="Id" />
-
-    <div class="form-group">
-        <input asp-for="Name" class="form-control" placeholder="name" />
-    </div>
-    <!--Accordion wrapper-->
-    <div class="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
-
-            <div class="" role="tab" id="headingTwo1">
-                <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseTwo1"
-                   aria-expanded="false" aria-controls="collapseTwo1">
-                    <label class="mb-0" asp-for="Slug"></label>
-                    <i class="fas fa-angle-down rotate-icon"></i>
-                </a>
+    
+    <div class="card">
+        <div class="card-header">
+            <div class="form-group">
+                <input asp-for="Name" class="form-control" placeholder="name" />
             </div>
-            <div id="collapseTwo1" class="collapse" role="tabpanel" aria-labelledby="headingTwo1"
-                 data-parent="#accordionEx1">
-                <div class="form-group">
-                    <input asp-for="Slug" class="form-control" />
+        </div>
+        <div class="card-body">
+            <!--Accordion wrapper-->
+            <div class="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
+
+                <div class="" role="tab" id="headingTwo1">
+                    <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseTwo1"
+                       aria-expanded="false" aria-controls="collapseTwo1">
+                        <label class="mb-0" asp-for="Slug"></label>
+                        <i class="fas fa-angle-down "></i>
+                    </a>
                 </div>
-            </div>
-        
-            <div class="" role="tab" id="headingTwo2">
-                <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseTwo21"
-                   aria-expanded="false" aria-controls="collapseTwo21">
-                    <label class="mb-0" asp-for="Excerpt"></label>
-                    <i class="fas fa-angle-down rotate-icon"></i>
-                </a>
-            </div>
-            <div id="collapseTwo21" class="collapse" role="tabpanel" aria-labelledby="headingTwo21"
-                 data-parent="#accordionEx1">
-                <div class="">
+                <div id="collapseTwo1" class="collapse" role="tabpanel" aria-labelledby="headingTwo1"
+                     data-parent="#accordionEx1">
                     <div class="form-group">
-                        <textarea asp-for="Excerpt" class="form-control" rows="5">@Model.Excerpt</textarea>
+                        <input asp-for="Slug" class="form-control" />
                     </div>
                 </div>
-            </div>
-           
-            <div class="" role="tab" id="headingThree31">
-                <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseThree31"
-                   aria-expanded="false" aria-controls="collapseThree31">
-                    <label class="mb-0" asp-for="Content"></label>
-                    <i class="fas fa-angle-down rotate-icon"></i>
-                </a>
-            </div>
-            <div id="collapseThree31" class="collapse" role="tabpanel" aria-labelledby="headingThree31"
-                 data-parent="#accordionEx1">
-                <div class="form-group">
-                    <textarea id="edit" name="content" class="form-control">
+
+                <div class="" role="tab" id="headingTwo2">
+                    <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseTwo21"
+                       aria-expanded="false" aria-controls="collapseTwo21">
+                        <label class="mb-0" asp-for="Excerpt"></label>
+                        <i class="fas fa-angle-down "></i>
+                    </a>
+                </div>
+                <div id="collapseTwo21" class="collapse" role="tabpanel" aria-labelledby="headingTwo21"
+                     data-parent="#accordionEx1">
+                    <div class="">
+                        <div class="form-group">
+                            <textarea asp-for="Excerpt" class="form-control" rows="5">@Model.Excerpt</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="" role="tab" id="headingThree31">
+                    <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseThree31"
+                       aria-expanded="false" aria-controls="collapseThree31">
+                        <label class="mb-0" asp-for="Content"></label>
+                        <i class="fas fa-angle-down"></i>
+                    </a>
+                </div>
+                <div id="collapseThree31" class="collapse" role="tabpanel" aria-labelledby="headingThree31"
+                     data-parent="#accordionEx1">
+                    <div class="form-group">
+                        <textarea id="edit" name="content" class="form-control">
                         @if (!String.IsNullOrWhiteSpace(Model.Content))
                         {
                             @Html.Raw(Model.Content)
                         }
-                    </textarea>A
+                    </textarea>
+                    </div>
                 </div>
             </div>
-
-
+            <!-- Accordion wrapper -->
+        </div>
+        <div class="card-footer p-0">
+            <div class="text-center">
+                <div class="btn-group">
+                    <button class="btn btn-primary btn-sm" type="submit">Save</button>
+                    <a asp-action="Index" class="btn btn-info btn-sm">Cancel</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- Accordion wrapper -->
 
-    <div class="text-center">
-        <button class="btn btn-primary btn-sm" type="submit">Save</button>
-        <a asp-action="Index" class="btn btn-info btn-sm">Cancel</a>
-    </div>
 
 </form>
 
@@ -88,7 +96,7 @@
     <div class="card-body" id="partsWrapper">
         @if (Model != null || Model.Parts.Any())
         {
-            foreach (var part in Model.Parts)
+            foreach (var part in Model.Parts.OrderBy(p => p.Order))
             {
                 @Html.Partial("EditSeminarPart", part)
             }
@@ -127,7 +135,7 @@
                 </div>
                 <!--Footer-->
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" id="modalSavePart">save</button>
+                    <button type="submit" class="btn btn-success" >save</button>
                     <button class="btn btn-outline-success waves-effect" data-dismiss="modal" data-toggle="modal">cancel</button>
                 </div>
                 <!--/.Footer-->

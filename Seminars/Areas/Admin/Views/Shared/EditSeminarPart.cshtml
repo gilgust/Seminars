@@ -1,5 +1,5 @@
 ﻿@model SeminarPart
-<div class="seminar-part" data-seminar-id="@Model.SeminarId" data-id="@Model.Id">
+<div id="seminarPart-@Model.Id"class="seminar-part"  data-seminar-id="@Model.SeminarId" data-id="@Model.Id" >
     <div id="order-part-@Model.Id">@Model.Order</div>
     <div id="name-part-@Model.Id">@Model.Name</div>
     

@@ -57,7 +57,7 @@ namespace Seminars.Areas.Admin.Controllers
                     throw;
             }
 
-            return NoContent();
+            return Ok(seminarPart);
         }
 
         // POST: api/SeminarParts
