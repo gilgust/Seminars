@@ -14,5 +14,6 @@ namespace Seminars.Repositories
         public virtual DbSet<Seminar> Seminars { get; set; }
         public virtual DbSet<SeminarPart> SeminarParts { get; set; }
         public DbSet<FileModel> Files{ get; set; }
+        public DbSet<Seminars.Models.SeminarChapter> SeminarChapter { get; set; }
     }
 }

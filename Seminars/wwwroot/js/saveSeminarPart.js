@@ -1,4 +1,5 @@
-﻿$("#addPart").on("click", addPartHandler);
+﻿// seminar parts CRUD
+$("#addPart").on("click", addPartHandler);
 $(".edit-part-btn").on("click", editPartBtnHandler);
 $("#saveSeminarPart").on("submit", saveSeminarPartHandler);
 $(".delete-part-btn").on("click", deletePartBtnPartHandler);
@@ -183,3 +184,6 @@ function editSeminarPartNode(data) {
 function deleteSeminarPartNode(data) {
     $(`#seminarPart-${data.id}`).replaceWith("");
 }
+
+
+
