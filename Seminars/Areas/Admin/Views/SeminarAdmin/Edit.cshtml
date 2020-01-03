@@ -9,7 +9,7 @@
 
 <form asp-action="Edit" method="post" class="my-4">
     <input type="hidden" asp-for="Id" />
-    
+
     <div class="card">
         <div class="card-header">
             <div class="form-group">
@@ -105,7 +105,7 @@
     </div>
 </div>
 
-<!--modal window-->
+<!--modal window Part Editor-->
 <div class="modal fade" id="centralModalFluidSuccessDemo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-fluid modal-notify modal-success" role="document">
@@ -120,12 +120,12 @@
             </div>
             <!--/.Header-->
             <!--Body-->
-            <form action="" method="post" id="saveSeminarPart" >
+            <form action="" method="post" id="saveSeminarPart">
                 <div class="modal-body">
-                    <input type="hidden" name="Id" id="new-part-id" value="0"  />
-                    <input type="hidden" name="SeminarId" id="parent-of-part" value="0"  />
+                    <input type="hidden" name="Id" id="new-part-id" value="0" />
+                    <input type="hidden" name="SeminarId" id="parent-of-part" value="0" />
                     <div class="md-form mb-5">
-                        <input type="text" name="Name" value="azaza" id="part-name"  class="form-control">
+                        <input type="text" name="Name" value="azaza" id="part-name" class="form-control">
                         <label for="Name">Part name</label>
                     </div>
                     <div class="md-form mb-5">
@@ -135,7 +135,7 @@
                 </div>
                 <!--Footer-->
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success" >save</button>
+                    <button type="submit" class="btn btn-success">save</button>
                     <button class="btn btn-outline-success waves-effect" data-dismiss="modal" data-toggle="modal">cancel</button>
                 </div>
                 <!--/.Footer-->
@@ -145,8 +145,46 @@
         <!--/.Content-->
     </div>
 </div>
-<!--/.modal window-->
-
+<!--/.modal window Part Editor-->
+<!--modal window Chapter Editor-->
+<div class="modal fade" id="centralModalChapterEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fluid modal-notify modal-success" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <p class="heading lead" id="chapter-modal-title"></p>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
+            </div>
+            <!--/.Header-->
+            <!--Body-->
+            <form action="" method="post" id="saveSeminarChapter">
+                <div class="modal-body">
+                    <input type="hidden" name="Id" id="new-chapter-id" value="0" />
+                    <div class="md-form mb-5">
+                        <input type="text" name="chapter-name" value="azaza" id="chapter-name" class="form-control">
+                        <label for="chapter-came">Part name</label>
+                    </div>
+                    <div class="md-form mb-5">
+                        <input type="number" name="chapter-order" value="0" id="chapter-order" class="form-control">
+                        <label for="chapter-order">Order</label>
+                    </div>
+                </div>
+                <!--Footer-->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">save</button>
+                    <button class="btn btn-outline-success waves-effect" data-dismiss="modal" data-toggle="modal">cancel</button>
+                </div>
+                <!--/.Footer-->
+            </form>
+            <!--/.Body-->
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!--/.modal window Chapter  Editor-->
 
 @section FooterScript
 {
@@ -235,9 +273,6 @@
                                 console.log('file delete problem: ' + JSON.stringify(err));
                             });
                     });
-
-
         });
-      
     </script>
 }

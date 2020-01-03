@@ -4,25 +4,24 @@ $(".edit-part-btn").on("click", editPartBtnHandler);
 $("#saveSeminarPart").on("submit", saveSeminarPartHandler);
 $(".delete-part-btn").on("click", deletePartBtnPartHandler);
 
-$("#centralModalFluidSuccessDemo").on('show.bs.modal', function () {
+$("#centralModalFluidSuccessDemo").on("show.bs.modal", function () {
     let seminarId = $("#Id").val();
     $('#parent-of-part').val(seminarId);
-    //alert("show");
 });
-$('#centralModalFluidSuccessDemo').on('hide.bs.modal', function () {
+$('#centralModalFluidSuccessDemo').on("hide.bs.modal", function () {
         //alert("hide");
     });
-$('#centralModalFluidSuccessDemo').on('hidden.bs.modal',function () {
+$('#centralModalFluidSuccessDemo').on("hidden.bs.modal",function () {
         $("#saveSeminarPart").trigger("reset");
         $("#new-part-id").val(0);
     });
 
 
 function addPartHandler() {
-    $('#modal-title').text("New part");
-    $("#part-name").val('');
-    $("#part-order").val('');
-    $('#centralModalFluidSuccessDemo').modal('show');
+    $("#modal-title").text("New part");
+    $("#part-name").val("");
+    $("#part-order").val("");
+    $("#centralModalFluidSuccessDemo").modal("show");
 }
 
 function editPartBtnHandler() {
@@ -186,4 +185,36 @@ function deleteSeminarPartNode(data) {
 }
 
 
+// seminar chapters CRUD
+$("#addChapter").on("click", addChapterHandler);
+$(".edit-chapter-btn").on("click", editChapterBtnHandler);
+$("#saveSeminarChapter").on("submit", saveSeminarChapterHandler);
+$(".delete-chapter-btn").on("click", deleteChapterBtnPartHandler);
 
+$("#centralModalChapterEdit").on('show.bs.modal', function () {
+    let seminarId = $("#Id").val();
+    $('#parent-of-part').val(seminarId);
+});
+$('#centralModalChapterEdit').on('hide.bs.modal', function () {
+    //alert("hide");
+});
+$('#centralModalChapterEdit').on('hidden.bs.modal', function () {
+    $("#saveSeminarPart").trigger("reset");
+    $("#new-part-id").val(0);
+});
+
+function addChapterHandler() {
+    $("#chapter-modal-title").text("New Chapter");
+    $("#part-name").val("");
+    $("#part-order").val("");
+    $("#centralModalFluidSuccessDemo").modal("show");
+}
+function editChapterBtnHandler() {
+    console.log("editChapterBtnHandler");
+}
+function saveSeminarChapterHandler() {
+    console.log("saveSeminarChapterHandler");
+}
+function deleteChapterBtnPartHandler() {
+    console.log("deleteChapterBtnPartHandler");
+}
