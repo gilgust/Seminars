@@ -1,0 +1,47 @@
+﻿@model SeminarPart
+<div id="seminarPart-@Model.Id" class="seminar-part border p-1"
+     style="background-color: azure; border-radius: 5px"
+     data-seminar-id="@Model.SeminarId"
+     data-id="@Model.Id">
+    <div class="d-flex">
+        <h4 id="name-part-@Model.Id" class="h4 col-10">@Model.Name</h4>
+        <p class="m-0 col">
+            <span>order : </span><span id="order-part-@Model.Id">@Model.Order</span>
+        </p>
+    </div>
+
+
+    <div class="btn-group">
+        <button type="button" class="edit-part-btn btn btn-sm btn-primary">edit</button>
+        <button type="button" class="delete-part-btn btn btn-sm btn-danger">delete</button>
+        <button type="button" class="create-chapter-btn btn btn-sm btn-primary">add chapter</button>
+    </div>
+    <div class="chapters-list">
+        @if (Model.Chapters.Any())
+        {
+            foreach (var chapter in Model.Chapters)
+            {
+                <div class="chapters-item my-1 p-1"
+                     style="background-color: beige"
+                     id="seminarChapter-@chapter.Id"
+                     data-seminar-id="@chapter.SeminarId"
+                     data-part-id="@chapter.ParentPartId"
+                     data-chapter-id="@chapter.Id">
+                    <div class="d-flex ml-1 mt-1">
+                        <h5 class="h5 col-10" id="name-chapter-@chapter.Id">@chapter.Name</h5>
+                        <p class="m-0 col">
+                            <span>order : </span>
+                            <span id="order-chapter-@chapter.Id">@chapter.Order</span>
+                        </p>
+                    </div>
+
+
+                    <div class="btn-group">
+                        <button type="button" class="edit-chapter-btn btn btn-sm btn-primary">edit</button>
+                        <button type="button" class="delete-chapter-btn btn btn-sm btn-danger">delete</button>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

@@ -12,11 +12,11 @@ namespace Seminars.Areas.Admin.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SeminarChaptersController : ControllerBase
+    public class SeminarChaptersAdminController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public SeminarChaptersController(AppDbContext context) => _context = context;
+        public SeminarChaptersAdminController(AppDbContext context) => _context = context;
 
         // GET: api/SeminarChapters
         [HttpGet]
