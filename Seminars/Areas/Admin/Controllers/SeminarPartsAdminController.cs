@@ -10,7 +10,7 @@ using Seminars.Repositories;
 
 namespace Seminars.Areas.Admin.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Parts")]
     [ApiController]
     public class SeminarPartsAdminController : ControllerBase
     {

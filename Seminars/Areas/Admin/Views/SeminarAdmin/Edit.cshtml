@@ -59,7 +59,7 @@
                 </div>
                 <div id="collapseThree31" class="collapse" role="tabpanel" aria-labelledby="headingThree31"
                      data-parent="#accordionEx1">
-                    <div class="form-group">
+                    <div class="form-group m-5">
                         <textarea id="edit" name="content" class="form-control">
                         @if (!String.IsNullOrWhiteSpace(Model.Content))
                         {
@@ -116,7 +116,7 @@
     <script src="~/js/saveSeminarPart.js"></script>
     <script>
         $(function () {
-            $('#edit').froalaEditor({
+            $('#edit, #part-content-editer, #chapter-content-editer').froalaEditor({
                 imageUploadURL: '/FroalaApi/UploadImage',
                 fileUploadURL: '/FroalaApi/UploadFile',
                 imageManagerLoadURL: '/FroalaApi/LoadImages',
