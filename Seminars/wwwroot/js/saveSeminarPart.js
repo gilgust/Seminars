@@ -32,8 +32,11 @@ function editPartBtnHandler() {
     const wrapper = $(this).closest(".seminar-part"),
         partId = $(wrapper).data("id"),
         partOrder = $(wrapper).find(`#order-part-${partId}`).text(),
+        partContent = $(wrapper).find(`#content-part-${partId}`).html(),
         partName = $(wrapper).find(`#name-part-${partId}`).text();
 
+
+    $("#part-content-editer").froalaEditor('html.set', partContent);
     $('#modal-title').text(partName);
     $("#part-name").val(partName);
     $("#part-order").val(partOrder);
@@ -45,15 +48,16 @@ function saveSeminarPartBtnHandler(e) {
     const id = this.elements["Id"].value,
         seminarId = this.elements["SeminarId"].value,
         name = this.elements["Name"].value,
+        content = $("#part-content-editer").froalaEditor('html.get' ),
         order = this.elements["Order"].value;
 
     if (Number(id) === 0) 
-        createSeminarPart(seminarId, name, order);
+        createSeminarPart(seminarId, name, order, content);
     else 
-        editSeminarPart(id, seminarId, name, order);
+        editSeminarPart(id, seminarId, name, order, content);
 }
 
-function createSeminarPart(seminarId, name, order) {
+function createSeminarPart(seminarId, name, order, content) {
     $.ajax({
         url: api.parts.url,
         contentType: "application/json",
@@ -61,7 +65,8 @@ function createSeminarPart(seminarId, name, order) {
         data: JSON.stringify({
             seminarId: seminarId,
             name: name,
-            order: order
+            order: order,
+            content: content
         })
     }).done(function (data) {
         //console.log(data);
@@ -73,11 +78,12 @@ function createSeminarPart(seminarId, name, order) {
         console.log(data);
     });
 }
-function editSeminarPart(id, seminarId, name, order) {
+function editSeminarPart(id, seminarId, name, order, content) {
     const data = JSON.stringify({
         id: id,
         Name: name,
         Order: order,
+        content: content,
         SeminarId: seminarId
     });
     $.ajax({
@@ -110,19 +116,24 @@ function deletePartPartBtnHandler() {
 }
 
 function createSeminarPartNode(data) {
+    console.log(data);
+
     const template = `
         <div id="seminarPart-${data.id}" class="seminar-part border p-1" style="background-color: azure; border-radius: 5px" data-seminar-id="${data.seminarId}" data-id="${data.id}">
-            <div class="d-flex">
+            <div class="d-flex  flex-wrap">
                 <div class="col-10">
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#part-content-wrapper-${data.id}">
-                        <span id="name-part-${data.id}">
+                    <a  data-toggle="collapse" href="#part-content-wrapper-${data.id}">
+                        <span class="stretched-link" id="name-part-${data.id}">
                             ${data.name}
                         </span>
-                    </button>
+                    </a>
                 </div>
                 <p class="m-0 col">
                     <span>order : </span><span id="order-part-${data.id}">${data.order}</span>
                 </p>
+                <div class="col-12" id="content-part-${data.id}">
+                    ${data.content}
+                </div>
             </div>
             <div class="btn-group">
                 <button type="button" class="edit-part-btn btn btn-sm btn-primary">edit</button>
@@ -149,6 +160,7 @@ function editSeminarPartNode(data) {
     const seminarPart = $(`#seminarPart-${data.id}`);
     $(seminarPart).find(`#order-part-${data.id}`).text(data.order);
     $(seminarPart).find(`#name-part-${data.id}`).text(data.name);
+    $(seminarPart).find(`#content-part-${data.id}`).empty().append(data.content);
 }
 
 
