@@ -14,10 +14,6 @@ namespace Seminars.Models
         public Seminar Seminar { get; set; }
         public IEnumerable<SeminarChapter> Chapters{ get; set; }
 
-        public SeminarPart()
-        {
-            Chapters = new List<SeminarChapter>();
-        }
-
+        public SeminarPart() => Chapters = new List<SeminarChapter>();
     }
 }

@@ -1,93 +1,104 @@
-﻿@model IEnumerable<Seminar>
+﻿@model HomeIndexViewModel
 
-<div class="container">
+    <div class="container">
 
-    <!--Section: Jumbotron-->
-    <section class="card wow fadeIn" style="background-image: url(https://mdbootstrap.com/img/Photos/Others/gradient1.jpg);">
-
-        <!-- Content -->
-        <div class="card-body text-white text-center py-5 px-5 my-5">
-
-            <h1 class="mb-4">
-                <strong>Learn Bootstrap 4 with MDB</strong>
-            </h1>
-            <p>
-                <strong>Best & free guide of responsive web design</strong>
-            </p>
-            <p class="mb-4">
-                <strong>
-                    The most comprehensive tutorial for the Bootstrap 4. Loved by over 500 000 users. Video and written
-                    versions available. Create your own, stunning website.
-                </strong>
-            </p>
-            <a target="_blank" href="https://mdbootstrap.com/education/bootstrap/" class="btn btn-outline-white btn-lg">
-                Start
-                free tutorial
-                <i class="fas fa-graduation-cap ml-2"></i>
-            </a>
-
-        </div>
-        <!-- Content -->
-    </section>
-    <!--Section: Jumbotron-->
-
-    <hr class="my-5">
-
-    <!--Section: Cards-->
-    <section class="text-center">
-
-            <!--Grid row-->
-        <div class="row mb-4 wow fadeIn d-flex flex-row justify-content-around flex-wrap">
-            @foreach (var seminar in Model)
+        <div class="bg-primary m-1 p-1 text-white d-flex justify-content-center align-items-center"><h4 class="m-1">User Details</h4></div>
+        <table class="table table-sm table-bordered m-1 p-1">
+            @foreach (var kvp in Model.Data)
             {
-                @Html.Partial("SeminarPreview", seminar)
+                <tr>
+                    <th>@kvp.Key</th>
+                    <th>@kvp.Value</th>
+                </tr>
             }
-        </div>
+        </table>
+
+        <!--Section: Jumbotron-->
+        <section class="card wow fadeIn" style="background-image: url(https://mdbootstrap.com/img/Photos/Others/gradient1.jpg);">
+
+            <!-- Content -->
+            <div class="card-body text-white text-center py-5 px-5 my-5">
+
+                <h1 class="mb-4">
+                    <strong>Learn Bootstrap 4 with MDB</strong>
+                </h1>
+                <p>
+                    <strong>Best & free guide of responsive web design</strong>
+                </p>
+                <p class="mb-4">
+                    <strong>
+                        The most comprehensive tutorial for the Bootstrap 4. Loved by over 500 000 users. Video and written
+                        versions available. Create your own, stunning website.
+                    </strong>
+                </p>
+                <a target="_blank" href="https://mdbootstrap.com/education/bootstrap/" class="btn btn-outline-white btn-lg">
+                    Start
+                    free tutorial
+                    <i class="fas fa-graduation-cap ml-2"></i>
+                </a>
+
+            </div>
+            <!-- Content -->
+        </section>
+        <!--Section: Jumbotron-->
+
+        <hr class="my-5">
+
+        <!--Section: Cards-->
+        <section class="text-center">
+
             <!--Grid row-->
+            <div class="row mb-4 wow fadeIn d-flex flex-row justify-content-around flex-wrap">
+                @foreach (var seminar in Model.Seminars)
+                {
+                    @Html.Partial("SeminarPreview", seminar)
+                }
+            </div>
+            <!--Grid row-->
+            <!--Pagination-->
+            @*<nav class="d-flex justify-content-center wow fadeIn">
+            <ul class="pagination pg-blue">*@
+
+            <!--Arrow left-->
+            @*<li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+
+                    <li class="page-item active">
+                        <a class="page-link" href="#">
+                            1
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">4</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">5</a>
+                    </li>
+
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>*@
+            <!--Pagination-->
+
+        </section>
 
 
-        <!--Pagination-->
-        @*<nav class="d-flex justify-content-center wow fadeIn">
-        <ul class="pagination pg-blue">*@
+        <!--Section: Cards-->
 
-        <!--Arrow left-->
-        @*<li class="page-item disabled">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                </li>
-
-                <li class="page-item active">
-                    <a class="page-link" href="#">
-                        1
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">2</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">3</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">4</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">5</a>
-                </li>
-
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>*@
-        <!--Pagination-->
-
-    </section>
-    <!--Section: Cards-->
-
-</div>
+    </div>

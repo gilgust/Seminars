@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql.Storage.Internal;
+using Seminars.Models;
 using Seminars.Repositories;
 
 namespace Seminars
@@ -26,6 +28,15 @@ namespace Seminars
             services.AddDbContextPool<AppDbContext>( options => 
                 options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddIdentity<AppUser, IdentityRole>(opt =>{
+                opt.Password.RequiredLength = 2;
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequireLowercase = false;
+                opt.Password.RequireUppercase = false;
+                opt.Password.RequireDigit= false;
+            }).AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+
             services.AddTransient<ISeminarRepository, SeminarRepository>();
 
             services.AddMvc();
@@ -41,6 +52,7 @@ namespace Seminars
             }
 
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(name: "areas", template: "{area:exists}/{controller=HomeAdmin}/{action=Index}/{id?}");

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Seminars.Models;
 using Seminars.Repositories;
+using Seminars.ViewModel;
 
 namespace Seminars.Controllers
 {
@@ -13,7 +14,17 @@ namespace Seminars.Controllers
         private readonly ISeminarRepository _seminars;
 
         public HomeController(ISeminarRepository context) => _seminars = context;
-        public IActionResult Index() => View(_seminars.Seminars.ToList());
+        public IActionResult Index()
+        {
+
+            return View(new HomeIndexViewModel(){
+                Seminars = _seminars.Seminars.ToList(),
+                Data = new Dictionary<string, object>
+                {
+                    ["Placeholder"] = "Placeholder"
+                }
+            });
+        }
         
 
         public IActionResult Seminar(string slug)

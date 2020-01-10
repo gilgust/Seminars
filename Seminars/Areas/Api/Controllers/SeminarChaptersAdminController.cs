@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Seminars.Models;
 using Seminars.Repositories;
 
-namespace Seminars.Areas.Admin.Controllers
+namespace Seminars.Areas.Api.Controllers
 {
     [Route("api/Chapters")]
     [ApiController]
