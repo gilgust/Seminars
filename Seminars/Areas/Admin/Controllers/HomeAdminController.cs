@@ -11,6 +11,7 @@ using Seminars.ViewModel;
 namespace Seminars.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class HomeAdminController : Controller
     {
         private readonly UserManager<AppUser> _userManager;

@@ -34,22 +34,56 @@ namespace Seminars.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginModel details, string returnUrl)
         {
-            if (ModelState.IsValid)
-            {
-                AppUser user = await _userManager.FindByEmailAsync(details.Email);
-                if (user != null)
-                {
-                    await _signInManager.SignOutAsync();
-                    Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, details.Password, false, false);
+            if (!ModelState.IsValid) return View(details);
 
-                    if (result.Succeeded)
-                    {
-                        return Redirect(returnUrl ?? "/");
-                    }
+            var user = await _userManager.FindByEmailAsync(details.Email);
+            if (user != null)
+            {
+                await _signInManager.SignOutAsync();
+                var result = await _signInManager.PasswordSignInAsync(user, details.Password, false, false);
+
+                if (result.Succeeded)
+                {
+                    return Redirect(returnUrl ?? "/");
                 }
-                ModelState.AddModelError(nameof(LoginModel.Email), "Invalid user or password");
             }
+            ModelState.AddModelError(nameof(LoginModel.Email), "Invalid user or password");
             return View(details);
         }
+
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
+        [AllowAnonymous]
+        public ViewResult Logup() => View();
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Logup(CreateUserModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new AppUser
+                {
+                    UserName = model.Name,
+                    Email = model.Email,
+                };
+                var result = await _userManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                    return RedirectToAction("Index", "Home");
+                else
+                    foreach (var error in result.Errors)
+                        ModelState.AddModelError("", error.Description);
+            }
+            return View(model);
+        }
+
+        [AllowAnonymous]
+        public IActionResult AccessDenied() => View();
     }
 }

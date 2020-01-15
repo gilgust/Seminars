@@ -20,5 +20,7 @@ namespace Seminars
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>();
+                //.UseDefaultServiceProvider(opt=>
+                //    opt.ValidateScopes = false);
     }
 }

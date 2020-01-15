@@ -12,8 +12,8 @@ namespace Seminars.infrastructure
     [HtmlTargetElement("td", Attributes = "identity-role")]
     public class RoleUsersTagHelper : TagHelper
     {
-        private UserManager<AppUser> _userManager;
-        private RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RoleUsersTagHelper(UserManager<AppUser> userMgr, RoleManager<IdentityRole> roleMgr)
         {
@@ -25,8 +25,8 @@ namespace Seminars.infrastructure
         public string Role { get; set; }
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            List<string> names = new List<string>();
-            IdentityRole role = await _roleManager.FindByIdAsync(Role);
+            var names = new List<string>();
+            var role = await _roleManager.FindByIdAsync(Role);
             if (role != null)
             {
                 foreach (var user in _userManager.Users)
@@ -35,7 +35,7 @@ namespace Seminars.infrastructure
                         names.Add(user.UserName);
                 }
             }
-            output.Content.SetContent(names.Any() ? string.Join(",", names) : "No Usrs");
+            output.Content.SetContent(names.Any() ? string.Join(",", names) : "No Users");
         }
     }
 }

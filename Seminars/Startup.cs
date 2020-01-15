@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql.Storage.Internal;
+using Seminars.Areas.Admin.Controllers;
 using Seminars.Models;
 using Seminars.Repositories;
 
@@ -48,20 +49,28 @@ namespace Seminars
             {
                 app.UseDeveloperExceptionPage();
                 app.UseStatusCodePages();
-
             }
 
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseMvc(routes =>
             {
-                routes.MapRoute(name: "areas", template: "{area:exists}/{controller=HomeAdmin}/{action=Index}/{id?}");
+                routes.MapRoute(
+                    name: null,
+                    template: "{area=Admin}/Role/{action=Index}",
+                    defaults: new { controller = "RoleAdmin"});
+                routes.MapRoute(
+                    name: "areas", 
+                    template: "{area:exists}/{controller=HomeAdmin}/{action=Index}/{id?}");
                 routes.MapRoute(
                     name: null, 
-                    template: "{controller=Home}/{action=Index}/{id?}"
-                    );
-                routes.MapRoute( name: null, template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute( 
+                    name: null, 
+                    template: "{controller=Home}/{action=Index}/{id?}");
                 });
+
+            // AppDbContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
         }
     }
 }

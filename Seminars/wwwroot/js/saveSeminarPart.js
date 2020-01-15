@@ -36,8 +36,8 @@ function editPartBtnHandler() {
         partName = $(wrapper).find(`#name-part-${partId}`).text();
 
 
-    $("#part-content-editer").froalaEditor('html.set', partContent);
-    $('#modal-title').text(partName);
+    $("#part-content-editer").froalaEditor("html.set", partContent);
+    $("#modal-title").text(partName);
     $("#part-name").val(partName);
     $("#part-order").val(partOrder);
     $("#new-part-id").val(partId);
@@ -204,13 +204,6 @@ function editChapterBtnHandler() {
     $("#new-chapter-parent-part-id").val(partId);
     $("#chapter-name").val( name );
     $("#chapter-order").val(order);
-
-    //console.log("wrapper ", wrapper );
-    //console.log("seminarId", seminarId);
-    //console.log("partId", partId);
-    //console.log("chapterId", chapterId);
-    //console.log("name", name);
-    //console.log("order", order);
 
     $("#centralModalChapterEdit").modal("show");
 }

@@ -7,9 +7,13 @@
 
   <ItemGroup>
     <Compile Remove="Areas\Admin\Models\**" />
+    <Compile Remove="Areas\Api\Pages\**" />
     <Content Remove="Areas\Admin\Models\**" />
+    <Content Remove="Areas\Api\Pages\**" />
     <EmbeddedResource Remove="Areas\Admin\Models\**" />
+    <EmbeddedResource Remove="Areas\Api\Pages\**" />
     <None Remove="Areas\Admin\Models\**" />
+    <None Remove="Areas\Api\Pages\**" />
   </ItemGroup>
 
   <ItemGroup>
