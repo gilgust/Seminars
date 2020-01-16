@@ -1,16 +1,7 @@
 ﻿@model HomeIndexViewModel
 
     <div class="container">
-        <div >
-            @if (User?.Identity?.IsAuthenticated ?? false)
-            {
-                <a asp-controller="Account" asp-action="Logout" class="btn btn-danger">LogOut</a>
-            }
-            else
-            {
-                <a asp-controller="Account" asp-action="Login" class="btn btn-primary">LogIn</a>
-            }
-        </div>
+       
         <div class="bg-primary m-1 p-1 text-white d-flex justify-content-center align-items-center"><h4 class="m-1">User Details</h4></div>
         <table class="table table-sm table-bordered m-1 p-1">
             @foreach (var kvp in Model.Data)

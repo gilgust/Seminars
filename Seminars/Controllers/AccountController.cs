@@ -63,7 +63,7 @@ namespace Seminars.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Logup(CreateUserModel model)
+        public async Task<IActionResult> Logup(LogupModel model)
         {
             if (ModelState.IsValid)
             {
@@ -72,18 +72,33 @@ namespace Seminars.Controllers
                     UserName = model.Name,
                     Email = model.Email,
                 };
-                var result = await _userManager.CreateAsync(user, model.Password);
+                // var result = await _userManager.CreateAsync(user, model.Password);
 
-                if (result.Succeeded)
-                    return RedirectToAction("Index", "Home");
-                else
-                    foreach (var error in result.Errors)
-                        ModelState.AddModelError("", error.Description);
+                // if (result.Succeeded)
+                //     return RedirectToAction("Index", "Home");
+                // else
+                //     foreach (var error in result.Errors)
+                //         ModelState.AddModelError("", error.Description);
             }
             return View(model);
         }
 
         [AllowAnonymous]
         public IActionResult AccessDenied() => View();
+
+        [AllowAnonymous]
+        [AcceptVerbs("Get", "Post")]
+        public async Task<IActionResult> NameIsAvailable(string name)
+        {
+            var user = await _userManager.FindByNameAsync(name);
+            return Json(user == null);
+        }
+        [AllowAnonymous]
+        [AcceptVerbs("Get", "Post")]
+        public async Task<IActionResult> EmailIsAvailable(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            return Json(user == null);
+        }
     }
 }

@@ -11,7 +11,7 @@ using Seminars.ViewModel;
 namespace Seminars.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "admin")]
     public class HomeAdminController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
@@ -43,31 +43,30 @@ namespace Seminars.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser(CreateUserModel model)
         {
-            if (ModelState.IsValid)
-            {
-                AppUser user = new AppUser
-                {
-                    UserName = model.Name,
-                    Email = model.Email,
-                };
-                IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+            if (!ModelState.IsValid) return View(model);
 
-                if (result.Succeeded)
-                    return RedirectToAction(nameof(Users));
-                else
-                    foreach (IdentityError error in result.Errors)
-                        ModelState.AddModelError("", error.Description);
-            }
+            var user = new AppUser
+            {
+                UserName = model.Name,
+                Email = model.Email,
+            };
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
+                return RedirectToAction(nameof(Users));
+            else
+                AddErrorsFromResult(result);
+
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteUser (string id)
         {
-            AppUser user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
             if (User != null)
             {
-                IdentityResult result = await _userManager.DeleteAsync(user);
+                var result = await _userManager.DeleteAsync(user);
                 if (result.Succeeded)
                     return RedirectToAction("Users");
                 else
@@ -81,7 +80,7 @@ namespace Seminars.Areas.Admin.Controllers
 
         public async Task<IActionResult> EditUser(string id)
         {
-            AppUser user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
             if (user != null)
                 return View(user);
             else
@@ -91,10 +90,11 @@ namespace Seminars.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> EditUser(string id, string email, string password)
         {
-            AppUser user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
             if(user != null) {
                 user.Email = email;
-                IdentityResult validEmail = await _userValidator.ValidateAsync(_userManager, user);
+                var validEmail = await _userValidator.ValidateAsync(_userManager, user);
+
                 if (!validEmail.Succeeded)
                     AddErrorsFromResult(validEmail);
 
@@ -109,15 +109,11 @@ namespace Seminars.Areas.Admin.Controllers
                 }
                 if ((validEmail.Succeeded && validPass == null) || (validEmail.Succeeded && password != string.Empty && validPass.Succeeded))
                 {
-                    IdentityResult result = await _userManager.UpdateAsync(user);
+                    var result = await _userManager.UpdateAsync(user);
                     if (result.Succeeded)
-                    {
-                        return RedirectToAction("Users");
-                    }
+                        return RedirectToAction(nameof(Users));
                     else
-                    {
                         AddErrorsFromResult(result);
-                    }
                 }
             }
             else
@@ -126,10 +122,9 @@ namespace Seminars.Areas.Admin.Controllers
             return View(user);
         }
 
-
         private void AddErrorsFromResult(IdentityResult result)
         {
-            foreach (IdentityError error in result.Errors)
+            foreach (var error in result.Errors)
                 ModelState.AddModelError("", error.Description);
         }
     }

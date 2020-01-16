@@ -13,7 +13,7 @@ using Seminars.ViewModel;
 namespace Seminars.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "admin")]
     public class RoleAdminController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;

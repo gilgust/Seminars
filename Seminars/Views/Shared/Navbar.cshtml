@@ -20,5 +20,19 @@
 
         </div>
 
+
+        <div class="btn-group">
+            @if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                <a asp-controller="Account" asp-action="Logout" class="btn btn-danger">LogOut</a>
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="Login" class="btn btn-primary">log in</a>
+                <a asp-controller="Account" asp-action="Logup" class="btn btn-primary">log up</a>
+            }
+
+        </div>
+
     </div>
 </nav>

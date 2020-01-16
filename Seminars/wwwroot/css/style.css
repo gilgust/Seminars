@@ -1,3 +1,7 @@
+html, body {
+    min-height: 100vh;
+}
+
 .sidebar-fixed {
   height: 100vh;
   width: 270px;
@@ -42,7 +46,7 @@
 
 
 @media (min-width: 1200px) {
-    .navbar, .page-footer, main {
+    .navbar, .page-footer, .admin-main {
     padding-left: 270px; } }
 
 @media (max-width: 1199.98px) {
@@ -52,3 +56,4 @@
         display: block;
     }
 }
+

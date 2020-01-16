@@ -1,0 +1,40 @@
+﻿@model LogupModel
+
+<div class="container my-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-6">
+            <div class="card">
+                <h5 class="card-header info-color white-text text-center py-4">
+                    <strong>Sign in</strong>
+                </h5>
+                <div class="card-body px-lg-5 pt-0">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <form asp-action="Logup" method="post" class="text-center" style="color: #757575;">
+                        <div class="md-form">
+                            <label asp-for="Name"></label>
+                            <span asp-validation-for="Name"></span>
+                            <input asp-for="Name" class="form-control" />
+                        </div>
+                        <div class="md-form">
+                            <label asp-for="Email"></label>
+                            <span asp-validation-for="Email"></span>
+                            <input asp-for="Email" class="form-control" />
+                        </div>
+                        <div class="md-form">
+                            <label asp-for="Password"></label>
+                            <span asp-validation-for="Password"></span>
+                            <input asp-for="Password" class="form-control" />
+                        </div>
+                        <div class="md-form">
+                            <label asp-for="PasswordConfirm"></label>
+                            <span asp-validation-for="PasswordConfirm"></span>
+                            <input asp-for="PasswordConfirm" class="form-control" />
+                        </div>
+                        <button type="submit" class="btn btn-outline-info btn-block my-4 waves-effect z-depth-0 ">Create</button>
+                        <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

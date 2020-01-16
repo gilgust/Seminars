@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Seminars.Models;
 
 namespace Seminars.ViewModel
@@ -20,10 +21,8 @@ namespace Seminars.ViewModel
     public class LoginModel
     {
         [Required]
-        [UIHint("email")]
         public string Email { get; set; }
         [Required]
-        [UIHint("password")]
         public string Password { get; set; }
     }
 
@@ -40,5 +39,23 @@ namespace Seminars.ViewModel
         public string RoleId { get; set; }
         public string[] IdsToAdd{ get; set; }
         public string[] IdsToDelete{ get; set; }
+    }
+
+    public class LogupModel
+    {
+        [Required]
+        [Remote(action: "NameIsAvailable", controller: "Account", ErrorMessage = "Name isn't available")]
+        public string Name { get; set; }
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        [Remote(action: "EmailIsAvailable", controller: "Account", ErrorMessage = "Email is already in use")]
+        public string Email { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
+        [Compare(nameof(Password), ErrorMessage = "password does not match")]
+        public string PasswordConfirm { get; set; }
     }
 }
