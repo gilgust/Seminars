@@ -18,21 +18,24 @@
             <!-- Left -->
             @Html.Partial("Menu")
 
+            <!-- Right -->
+            <div class="d-flex justify-content-end align-items-center">
+                @if (User?.Identity?.IsAuthenticated ?? false)
+                {
+                    <span class="text-center"> @User.Identity.Name</span>
+                }
+                <div class="btn-group ">
+                    @if (User?.Identity?.IsAuthenticated ?? false)
+                    {
+                        <a asp-controller="Account" asp-action="Logout" class="btn btn-secondary btn-sm">log out</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-primary btn-sm">log in</a>
+                        <a asp-controller="Account" asp-action="Logup" class="btn btn-primary btn-sm">Sign Up</a>
+                    }
+                </div>
+            </div>
         </div>
-
-
-        <div class="btn-group">
-            @if (User?.Identity?.IsAuthenticated ?? false)
-            {
-                <a asp-controller="Account" asp-action="Logout" class="btn btn-danger">LogOut</a>
-            }
-            else
-            {
-                <a asp-controller="Account" asp-action="Login" class="btn btn-primary">log in</a>
-                <a asp-controller="Account" asp-action="Logup" class="btn btn-primary">log up</a>
-            }
-
-        </div>
-
     </div>
 </nav>

@@ -5,7 +5,7 @@
         <div class="col-6">
             <div class="card">
                 <h5 class="card-header info-color white-text text-center py-4">
-                    <strong>Sign in</strong>
+                    <strong>Sign Up</strong>
                 </h5>
                 <div class="card-body px-lg-5 pt-0">
                     <div asp-validation-summary="All" class="text-danger"></div>
@@ -23,15 +23,16 @@
                         <div class="md-form">
                             <label asp-for="Password"></label>
                             <span asp-validation-for="Password"></span>
-                            <input asp-for="Password" class="form-control" />
+                            <input asp-for="Password" class="form-control" autocomplete="false"/>
                         </div>
                         <div class="md-form">
                             <label asp-for="PasswordConfirm"></label>
                             <span asp-validation-for="PasswordConfirm"></span>
-                            <input asp-for="PasswordConfirm" class="form-control" />
+                            <input asp-for="PasswordConfirm" class="form-control" autocomplete="false"/>
                         </div>
-                        <button type="submit" class="btn btn-outline-info btn-block my-4 waves-effect z-depth-0 ">Create</button>
-                        <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-outline-info my-4 waves-effect">Sign Up</button>
+                            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary my-4 waves-effect text-center">Cancel</a>
+
                     </form>
                 </div>
             </div>

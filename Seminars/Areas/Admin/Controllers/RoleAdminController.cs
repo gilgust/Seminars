@@ -38,7 +38,7 @@ namespace Seminars.Areas.Admin.Controllers
                 else 
                     AddErrorsFromResult(result);
             }
-            return View(name);
+            return View(nameof(Create), model: name);
         }
 
         [HttpPost]

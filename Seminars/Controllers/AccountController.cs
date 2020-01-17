@@ -72,13 +72,21 @@ namespace Seminars.Controllers
                     UserName = model.Name,
                     Email = model.Email,
                 };
-                // var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await _userManager.CreateAsync(user, model.Password);
 
-                // if (result.Succeeded)
-                //     return RedirectToAction("Index", "Home");
-                // else
-                //     foreach (var error in result.Errors)
-                //         ModelState.AddModelError("", error.Description);
+                if (result.Succeeded)
+                {
+                    if (User?.Identity?.IsAuthenticated ?? false)
+                        await _signInManager.SignOutAsync();
+
+                    await _userManager.AddToRoleAsync(user, "user");
+
+                    await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                    foreach (var error in result.Errors)
+                        ModelState.AddModelError("", error.Description);
             }
             return View(model);
         }
