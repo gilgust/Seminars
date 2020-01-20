@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace Seminars.Models
 {
@@ -11,6 +12,7 @@ namespace Seminars.Models
         public string Content { get; set; }
         public int Order { get; set; }
         public int SeminarId { get; set; }
+        [JsonIgnore]
         public Seminar Seminar { get; set; }
         public IEnumerable<SeminarChapter> Chapters{ get; set; }
 

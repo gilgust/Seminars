@@ -48,7 +48,7 @@ function saveSeminarPartBtnHandler(e) {
     const id = this.elements["Id"].value,
         seminarId = this.elements["SeminarId"].value,
         name = this.elements["Name"].value,
-        content = $("#part-content-editer").froalaEditor('html.get' ),
+        content = $("#part-content-editer").froalaEditor("html.get"),
         order = this.elements["Order"].value;
 
     if (Number(id) === 0) 

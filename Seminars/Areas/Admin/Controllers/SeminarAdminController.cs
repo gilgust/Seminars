@@ -30,15 +30,6 @@ namespace Seminars.Areas.Admin.Controllers
         {
             if (seminar.Id != 0 && !ModelState.IsValid) return View(seminar);
 
-            if (string.IsNullOrWhiteSpace(seminar.Slug))
-            {
-                var trn = new TranslitMethods.Translitter();
-                var translatedName = trn.Translit(seminar.Name, TranslitMethods.TranslitType.Iso);
-
-                var buffSlug = WebUtility.UrlEncode(translatedName)?.Replace('+', '-')??"no-name-seminar";
-                seminar.Slug = _repository.AvailableSlug( seminar.Id, buffSlug);
-            }
-
             _repository.SaveSeminar(seminar);
             TempData["message"] = $"{seminar.Name} has been saved";
             return RedirectToAction(nameof(Index));

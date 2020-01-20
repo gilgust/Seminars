@@ -53,6 +53,9 @@ namespace Seminars.Controllers
             return View(seminar);
         }
 
+        public ViewResult TestSeminarApi() =>  View(_seminars.Seminars.ToList());
+        
+
         private Dictionary<string, object> GetData(string actionName) => 
         new Dictionary<string, object>
         {

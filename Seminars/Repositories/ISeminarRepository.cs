@@ -13,7 +13,11 @@ namespace Seminars.Repositories
         Seminar DeleteSeminar(int seminarId);
         Seminar SeminarBySlug(string slug);
         Seminar SeminarById(int id);
-        string AvailableSlug(int seminarId, string slug);
 
+        Task<List<Seminar>> GetSeminarsAsync();
+        Task<Seminar> GetSeminarByIdAsync(int id);
+        Task<Seminar> EditSeminar(Seminar seminar);
+        Task<Seminar> AddSeminar(Seminar seminar);
+        Task<Seminar> DeleteSeminarAsync(int seminarId);
     }
 }

@@ -41,6 +41,7 @@ namespace Seminars
             services.AddTransient<ISeminarRepository, SeminarRepository>();
 
             services.AddMvc();
+            
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
