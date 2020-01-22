@@ -52,7 +52,7 @@ namespace Seminars.Controllers
             
             return View(seminar);
         }
-
+        [Route("/TestSeminarApi")]
         public ViewResult TestSeminarApi() =>  View(_seminars.Seminars.ToList());
         
 

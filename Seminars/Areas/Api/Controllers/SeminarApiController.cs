@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -19,6 +20,7 @@ namespace Seminars.Areas.Api.Controllers
         public SeminarApiController(ISeminarRepository repository) => _repository = repository;
 
         //GET: api/Seminars
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Seminar>>> GetSeminars() => await _repository.GetSeminarsAsync();
 
