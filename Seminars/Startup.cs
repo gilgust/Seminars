@@ -26,8 +26,9 @@ namespace Seminars
         public void ConfigureServices(IServiceCollection services)
         {
             //    "DefaultConnection1": "Server=(localdb)\\MSSQLLocalDB;Database=sqlSerwerAppSeminarsTest;AttachDbFilename=D:\\databases\\sqlSerwerAppSeminarsTest.mdf;Trusted_Connection=True;MultipleActiveResultSets=true"
-            services.AddDbContextPool<AppDbContext>( options => 
-                options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContextPool<AppDbContext>( options =>
+                  // options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+                  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<AppUser, IdentityRole>(opt =>{
                 opt.Password.RequiredLength = 2;
