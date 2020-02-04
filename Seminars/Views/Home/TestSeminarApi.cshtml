@@ -8,23 +8,24 @@
 <button id="get_seminars">Get seminars</button>
 <div id="seminar_wrapper">
     @*@if (Model.Any())
-    {
-        foreach (var seminar in Model)
         {
-            <div data-id="@seminar.Id" data-name="@seminar.Name" id="seminar-@seminar.Id">
-                <div id="seminar-@seminar.Id-name">@seminar.Name</div>
-                <div id="seminar-@seminar.Id-slug">@seminar.Slug</div>
-                <div id="seminar-@seminar.Id-excerpt">@seminar.Excerpt</div>
-                <div id="seminar-@seminar.Id-content">@Html.Raw(seminar.Content)</div>
-                <button type="button" class="delete-seminar-btn">delete</button>
-                <button type="button" class="edit-seminar-btn">edit</button>
-            </div>
-        }
-    }*@
+            foreach (var seminar in Model)
+            {
+                <div data-id="@seminar.Id" data-name="@seminar.Name" id="seminar-@seminar.Id">
+                    <div id="seminar-@seminar.Id-name">@seminar.Name</div>
+                    <div id="seminar-@seminar.Id-slug">@seminar.Slug</div>
+                    <div id="seminar-@seminar.Id-excerpt">@seminar.Excerpt</div>
+                    <div id="seminar-@seminar.Id-content">@Html.Raw(seminar.Content)</div>
+                    <button type="button" class="delete-seminar-btn">delete</button>
+                    <button type="button" class="edit-seminar-btn">edit</button>
+                </div>
+            }
+        }*@
 </div>
-<div class="d-flex justify-content-center align-items-center">
-    <form action="" method="post" id="seminar-form" class="md-form">
-        <input type="hidden" id="0" value="0" />        
+
+<div class="d-flex justify-content-center align-items-center p-5">
+    <form action="" method="post" id="seminar-form" class="md-form col-10">
+        <input type="hidden" id="id" value="0" />
         <div class="md-form">
             <input type="text" for="name" id="name" class="form-control" />
             <label for="name">name</label>
@@ -41,13 +42,33 @@
             <textarea id="content" class="form-control-plaintext"></textarea>
             <label for="content">content</label>
         </div>
-
-
-
         <button type="submit" class="btn btn-outline-amber">save</button>
-
     </form>
 </div>
+
+<a class="btn btn-primary btn-sm waves-effect waves-light" data-toggle="modal" data-target="#frameModalTopInfoDemo" data-backdrop="false">Top</a>
+
+<!-- Frame Modal Top Info-->
+<div class="modal fade top" id="frameModalTopInfoDemo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog modal-frame modal-top modal-notify modal-info" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Body-->
+            <div class="modal-body">
+                <div class="row d-flex justify-content-center align-items-center">
+
+                    <p class="pt-3 pr-2" id="result-modal">azaza</p>
+
+                    <a role="button" class="btn btn-info">Get it now<i class="far fa-gem ml-1"></i></a>
+                    <a role="button" class="btn btn-outline-info waves-effect" data-dismiss="modal">No,thanks</a>
+                </div>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!-- Frame Modal Bottom Success-->
 
 
 @section Footer

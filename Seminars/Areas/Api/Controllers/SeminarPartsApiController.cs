@@ -12,11 +12,11 @@ namespace Seminars.Areas.Api.Controllers
 {
     [Route("api/Parts")]
     [ApiController]
-    public class SeminarPartsAdminController : ControllerBase
+    public class SeminarPartsApiController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly ISeminarPartRepository _context;
 
-        public SeminarPartsAdminController(AppDbContext context) => _context = context;
+        public SeminarPartsApiController(ISeminarPartRepository context) => _context = context;
 
         // GET: api/SeminarParts
         [HttpGet]
@@ -27,7 +27,7 @@ namespace Seminars.Areas.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<SeminarPart>> GetSeminarPart(int id)
         {
-            var seminarPart = await _context.SeminarParts.FindAsync(id);
+            var seminarPart = await _context.GetPartByIdAsync(id);
 
             if (seminarPart == null)
                 return NotFound();
@@ -40,32 +40,19 @@ namespace Seminars.Areas.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSeminarPart(int id,  [FromBody] SeminarPart seminarPart)
         {
-            if (id != seminarPart.Id)
+            if (seminarPart.Id != id)
                 return BadRequest();
 
-            _context.Entry(seminarPart).State = EntityState.Modified;
+            var result = await _context.EditPartAsync(seminarPart);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SeminarPartExists(id))
-                    return NotFound();
-                else
-                    throw;
-            }
-
-            return Ok(seminarPart);
+            return Ok(result);
         }
 
         // POST: api/SeminarParts
         [HttpPost]
         public async Task<ActionResult<SeminarPart>> PostSeminarPart(SeminarPart seminarPart)
         {
-            _context.SeminarParts.Add(seminarPart);
-            await _context.SaveChangesAsync();
+            await _context.AddPartAsync(seminarPart);
 
             return CreatedAtAction("GetSeminarPart", new { id = seminarPart.Id }, seminarPart);
         }
@@ -75,16 +62,12 @@ namespace Seminars.Areas.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<SeminarPart>> DeleteSeminarPart(int id)
         {
-            var seminarPart = await _context.SeminarParts.FindAsync(id);
+            var seminarPart = await _context.DeleteSeminarPartAsync(id);
+
             if (seminarPart == null)
                 return NotFound();
-
-            _context.SeminarParts.Remove(seminarPart);
-            await _context.SaveChangesAsync();
-
-            return seminarPart;
+            
+            return Ok(seminarPart);
         }
-
-        private bool SeminarPartExists(int id) => _context.SeminarParts.Any(e => e.Id == id);
     }
 }

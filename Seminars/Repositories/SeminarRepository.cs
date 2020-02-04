@@ -114,6 +114,8 @@ namespace Seminars.Repositories
                 seminar.Slug = AvailableSlug(seminar.Id, buffSlug);
             }
 
+
+
             _context.Seminars.Add(seminar);
             await _context.SaveChangesAsync();
 

@@ -20,7 +20,6 @@ namespace Seminars.Areas.Api.Controllers
         public SeminarApiController(ISeminarRepository repository) => _repository = repository;
 
         //GET: api/Seminars
-        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Seminar>>> GetSeminars() => await _repository.GetSeminarsAsync();
 
@@ -36,7 +35,7 @@ namespace Seminars.Areas.Api.Controllers
             return Ok(JsonConvert.SerializeObject(seminar));
         }
 
-        //GET: api/Seminars/1
+        //PUT: api/Seminars/1
         [HttpPut("{id}")]
         public async Task<IActionResult> Edit(int id, [FromBody] Seminar seminar)
         {
@@ -49,8 +48,9 @@ namespace Seminars.Areas.Api.Controllers
             return Ok(result);
         }
 
-        //POST: api/Seminars/1
+        //POST: api/Seminars
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<Seminar>> Post(Seminar seminar)
         {
             if (seminar.Id != 0 ) return BadRequest(seminar);

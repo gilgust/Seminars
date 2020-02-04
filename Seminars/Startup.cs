@@ -25,7 +25,6 @@ namespace Seminars
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //    "DefaultConnection1": "Server=(localdb)\\MSSQLLocalDB;Database=sqlSerwerAppSeminarsTest;AttachDbFilename=D:\\databases\\sqlSerwerAppSeminarsTest.mdf;Trusted_Connection=True;MultipleActiveResultSets=true"
             services.AddDbContextPool<AppDbContext>( options =>
                   // options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
                   options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -40,6 +39,8 @@ namespace Seminars
                 .AddDefaultTokenProviders();
 
             services.AddTransient<ISeminarRepository, SeminarRepository>();
+            services.AddTransient<ISeminarPartRepository, SeminarPartRepository>();
+            services.AddTransient<ISeminarChapterRepository, ChapterRepository>();
 
             services.AddMvc();
             

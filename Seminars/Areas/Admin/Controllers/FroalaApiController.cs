@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ImageMagick;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,13 +6,12 @@ namespace Seminars.Areas.Admin.Controllers
 {
     public class FroalaApiController : Controller
     {
+        private readonly string _uploadPath = "wwwroot/uploads/";
         public IActionResult UploadImage()
         {
-            string uploadPath = "wwwroot/uploads/";
-
             try
             {
-                return Json(FroalaEditor.Image.Upload(HttpContext, uploadPath));
+                return Json(FroalaEditor.Image.Upload(HttpContext, _uploadPath));
             }
             catch (Exception e)
             {
@@ -25,11 +21,9 @@ namespace Seminars.Areas.Admin.Controllers
 
         public IActionResult UploadVideo()
         {
-            string uploadPath = "wwwroot/uploads/";
-
             try
             {
-                return Json(FroalaEditor.Video.Upload(HttpContext, uploadPath));
+                return Json(FroalaEditor.Video.Upload(HttpContext, _uploadPath));
             }
             catch (Exception e)
             {
@@ -39,13 +33,9 @@ namespace Seminars.Areas.Admin.Controllers
 
         public IActionResult UploadFile()
         {
-            string uploadPath = "wwwroot/uploads/";
-
-            object response;
             try
             {
-                response = FroalaEditor.File.Upload(HttpContext, uploadPath);
-                return Json(response);
+                return Json(FroalaEditor.File.Upload(HttpContext, _uploadPath));
             }
             catch (Exception e)
             {
@@ -55,11 +45,9 @@ namespace Seminars.Areas.Admin.Controllers
 
         public IActionResult LoadImages()
         {
-            string uploadPath = "wwwroot/uploads/";
-
             try
             {
-                return Json(FroalaEditor.Image.List(uploadPath));
+                return Json(FroalaEditor.Image.List(_uploadPath));
             }
             catch (Exception e)
             {
@@ -69,19 +57,16 @@ namespace Seminars.Areas.Admin.Controllers
 
         public IActionResult UploadImageResize()
         {
-            string fileRoute = "wwwroot/uploads/";
+            var resizeGeometry = new MagickGeometry(300, 300) {IgnoreAspectRatio = true};
 
-            MagickGeometry resizeGeometry = new MagickGeometry(300, 300);
-            resizeGeometry.IgnoreAspectRatio = true;
-
-            FroalaEditor.ImageOptions options = new FroalaEditor.ImageOptions
+            var options = new FroalaEditor.ImageOptions
             {
                 ResizeGeometry = resizeGeometry
             };
 
             try
             {
-                return Json(FroalaEditor.Image.Upload(HttpContext, fileRoute, options));
+                return Json(FroalaEditor.Image.Upload(HttpContext, _uploadPath, options));
             }
             catch (Exception e)
             {
@@ -91,21 +76,14 @@ namespace Seminars.Areas.Admin.Controllers
 
         public IActionResult UploadImageValidation()
         {
-            string fileRoute = "wwwroot/uploads/";
-
             Func<string, string, bool> validationFunction = (filePath, mimeType) => {
 
-                MagickImageInfo info = new MagickImageInfo(filePath);
+                var info = new MagickImageInfo(filePath);
 
-                if (info.Width != info.Height)
-                {
-                    return false;
-                }
-
-                return true;
+                return info.Width == info.Height;
             };
 
-            FroalaEditor.ImageOptions options = new FroalaEditor.ImageOptions
+            var options = new FroalaEditor.ImageOptions
             {
                 Fieldname = "myImage",
                 Validation = new FroalaEditor.ImageValidation(validationFunction)
@@ -113,7 +91,7 @@ namespace Seminars.Areas.Admin.Controllers
 
             try
             {
-                return Json(FroalaEditor.Image.Upload(HttpContext, fileRoute, options));
+                return Json(FroalaEditor.Image.Upload(HttpContext, _uploadPath, options));
             }
             catch (Exception e)
             {
@@ -123,20 +101,15 @@ namespace Seminars.Areas.Admin.Controllers
 
         public IActionResult UploadFileValidation()
         {
-            string fileRoute = "wwwroot/";
+            var fileRoute = "wwwroot/";
 
             Func<string, string, bool> validationFunction = (filePath, mimeType) => {
 
-                long size = new System.IO.FileInfo(filePath).Length;
-                if (size > 10 * 1024 * 1024)
-                {
-                    return false;
-                }
-
-                return true;
+                var size = new System.IO.FileInfo(filePath).Length;
+                return size <= 10 * 1024 * 1024;
             };
 
-            FroalaEditor.FileOptions options = new FroalaEditor.FileOptions
+            var options = new FroalaEditor.FileOptions
             {
                 Fieldname = "myFile",
                 Validation = new FroalaEditor.FileValidation(validationFunction)
@@ -194,7 +167,7 @@ namespace Seminars.Areas.Admin.Controllers
 
         public IActionResult S3Signature()
         {
-            FroalaEditor.S3Config config = new FroalaEditor.S3Config
+            var config = new FroalaEditor.S3Config
             {
                 Bucket = Environment.GetEnvironmentVariable("AWS_BUCKET"),
                 Region = Environment.GetEnvironmentVariable("AWS_REGION"),
