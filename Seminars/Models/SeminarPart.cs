@@ -6,6 +6,8 @@ namespace Seminars.Models
 {
     public class SeminarPart
     {
+        public SeminarPart() => Chapters = new List<SeminarChapter>();
+
         public int Id { get; set; }
         public string Name { get; set; }
         [Display(Name = "содержание")]
@@ -15,7 +17,5 @@ namespace Seminars.Models
         [JsonIgnore]
         public Seminar Seminar { get; set; }
         public IEnumerable<SeminarChapter> Chapters{ get; set; }
-
-        public SeminarPart() => Chapters = new List<SeminarChapter>();
     }
 }

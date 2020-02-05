@@ -20,14 +20,7 @@ namespace Seminars.Repositories
         public void SaveSeminar(Seminar seminar)
         {
             //generate slug if isn't exist
-            if (string.IsNullOrWhiteSpace(seminar.Slug))
-            {
-                var trn = new TranslitMethods.Translitter();
-                var translatedName = trn.Translit(seminar.Name, TranslitMethods.TranslitType.Iso);
-
-                var buffSlug = WebUtility.UrlEncode(translatedName)?.Replace('+', '-') ?? "no-name-seminar";
-                seminar.Slug = AvailableSlug(seminar.Id, buffSlug);
-            }
+            seminar.Slug = AvailableSlug(seminar);
 
             if (seminar.Id == 0)
                 _context.Seminars.Add(seminar);
@@ -35,12 +28,7 @@ namespace Seminars.Repositories
             {
                 var dbEntity = _context.Seminars.FirstOrDefault(s => s.Id == seminar.Id);
                 if (dbEntity != null)
-                {
-                    dbEntity.Name = seminar.Name;
-                    dbEntity.Content = seminar.Content;
-                    dbEntity.Slug = seminar.Slug;
-                    dbEntity.Excerpt = seminar.Excerpt;
-                }
+                    _context.Entry(seminar).State = EntityState.Modified;
             }
             _context.SaveChanges();
         }
@@ -74,7 +62,7 @@ namespace Seminars.Repositories
 
       
 
-        public async Task<List<Seminar>> GetSeminarsAsync() => await _context.Seminars.ToListAsync();
+        public async Task<List<Seminar>> GetSeminarsAsync() => await Seminars.ToListAsync();
 
         public async Task<Seminar> GetSeminarByIdAsync(int id)
         {
@@ -85,6 +73,7 @@ namespace Seminars.Repositories
 
         public async Task<Seminar> EditSeminar(Seminar seminar)
         {
+
             _context.Entry(seminar).State = EntityState.Modified;
 
             try
@@ -111,7 +100,7 @@ namespace Seminars.Repositories
                 var translatedName = trn.Translit(seminar.Name, TranslitMethods.TranslitType.Iso);
 
                 var buffSlug = WebUtility.UrlEncode(translatedName)?.Replace('+', '-') ?? "no-name-seminar";
-                seminar.Slug = AvailableSlug(seminar.Id, buffSlug);
+                seminar.Slug = AvailableSlug(seminar);
             }
 
 
@@ -136,19 +125,32 @@ namespace Seminars.Repositories
 
 
         private bool SeminarExists(int id) => _context.Seminars.Any(e => e.Id == id);
-        private string AvailableSlug(int seminarId, string slug)
+        private string AvailableSlug(Seminar seminar)
         {
-            var counter = 0;
-            var bufSlug = slug;
+            var bufSlug = seminar.Slug;
+
+            if (string.IsNullOrWhiteSpace(bufSlug))
+            {
+                var trn = new TranslitMethods.Translitter();
+                var translatedName = !string.IsNullOrWhiteSpace(seminar.Name)
+                    ? trn.Translit(seminar.Name, TranslitMethods.TranslitType.Iso)
+                    : "no-name";
+
+                bufSlug  = WebUtility.UrlEncode(translatedName)?.Replace('+', '-') ;
+            }
+            var counter = 1;
+            var uniqueSlug = bufSlug;
+
             while (true)
             {
-                var dbEntity = _context.Seminars.FirstOrDefault(s => s.Slug == bufSlug);
+                var dbEntity = _context.Seminars.FirstOrDefault(s => s.Slug == uniqueSlug);
 
-                if (dbEntity == null || dbEntity.Id == seminarId)
-                    return bufSlug;
+                if (dbEntity == null || dbEntity.Id == seminar.Id)
+                    break;
 
-                bufSlug = slug + "-" + counter++;
+                uniqueSlug = bufSlug + "-" + counter++;
             }
+            return uniqueSlug;
         }
     }
 }

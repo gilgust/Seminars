@@ -12,6 +12,7 @@ using Seminars.Repositories;
 namespace Seminars.Areas.Api.Controllers
 {
     [Route("api/Seminars")]
+    [Authorize(Roles = "admin")]
     [ApiController]
     public class SeminarApiController : ControllerBase
     {
@@ -20,10 +21,12 @@ namespace Seminars.Areas.Api.Controllers
         public SeminarApiController(ISeminarRepository repository) => _repository = repository;
 
         //GET: api/Seminars
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Seminar>>> GetSeminars() => await _repository.GetSeminarsAsync();
 
         //GET: api/Seminars/1
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<Seminar>> GetSeminarById(int id)
         {
@@ -32,7 +35,7 @@ namespace Seminars.Areas.Api.Controllers
                 return NotFound();
 
             
-            return Ok(JsonConvert.SerializeObject(seminar));
+            return Ok(seminar);
         }
 
         //PUT: api/Seminars/1
@@ -50,7 +53,6 @@ namespace Seminars.Areas.Api.Controllers
 
         //POST: api/Seminars
         [HttpPost]
-        [Authorize(Roles = "admin")]
         public async Task<ActionResult<Seminar>> Post(Seminar seminar)
         {
             if (seminar.Id != 0 ) return BadRequest(seminar);
@@ -58,11 +60,11 @@ namespace Seminars.Areas.Api.Controllers
             return Ok(await _repository.AddSeminar(seminar));
         }
 
-        //POST: api/Seminars/1
-        [HttpDelete]
-        public async Task<ActionResult<Seminar>> Delete(int seminarId)
+        //DELETE: api/Seminars/1
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Seminar>> Delete(int id)
         {
-            var result = await _repository.DeleteSeminarAsync(seminarId);
+            var result = await _repository.DeleteSeminarAsync(id);
 
             if (result == null) return BadRequest();
          
