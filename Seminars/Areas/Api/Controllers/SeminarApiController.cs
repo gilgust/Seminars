@@ -12,7 +12,7 @@ using Seminars.Repositories;
 namespace Seminars.Areas.Api.Controllers
 {
     [Route("api/Seminars")]
-    // [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     [ApiController]
     public class SeminarApiController : ControllerBase
     {

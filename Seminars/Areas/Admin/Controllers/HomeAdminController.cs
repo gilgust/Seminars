@@ -26,9 +26,6 @@ namespace Seminars.Areas.Admin.Controllers
             _passwordHasher = passwordHasher;
         }
 
-        [Authorize]
-        public ViewResult TestAuth() => View(new Dictionary<string, object> { ["placeholder"] = "Placeholder"});
-
         public IActionResult Index()
         {
             return View();

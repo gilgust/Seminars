@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using Seminars.Repositories;
 namespace Seminars.Areas.Api.Controllers
 {
     [Route("api/Chapters")]
+    [Authorize(Roles = "admin")]
     [ApiController]
     public class SeminarChaptersApiController : ControllerBase
     {
@@ -19,11 +21,14 @@ namespace Seminars.Areas.Api.Controllers
         public SeminarChaptersApiController(ISeminarChapterRepository context) => _context = context;
 
         // GET: api/SeminarChapters
+
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SeminarChapter>>> GetSeminarChapter() => await _context.GetChaptersAsync();
-        
+
 
         // GET: api/SeminarChapters/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<SeminarChapter>> GetSeminarChapter(int id)
         {
