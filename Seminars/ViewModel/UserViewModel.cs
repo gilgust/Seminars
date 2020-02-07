@@ -20,9 +20,9 @@ namespace Seminars.ViewModel
     }
     public class LoginModel
     {
-        [Required]
+        [Required(ErrorMessage = "Укажите email")]
         public string Email { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Укажите пароль")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }

@@ -2,63 +2,84 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Seminars.Models;
+using Seminars.ViewModel;
 
 namespace Seminars.Areas.Api.Controllers
 {
+    [Route("api/Account")]
+    [Authorize]
     [ApiController]
     public class AccountApiController : ControllerBase
     {
-        public readonly UserManager<AppUser> _userManager;
-        public readonly SignInManager<AppUser> _signInManager;
-        private readonly IUserValidator<AppUser> _userValidator;
-        private readonly IPasswordValidator<AppUser> _passwordValidator;
-        private readonly IPasswordHasher<AppUser> _passwordHasher;
-        public AccountApiController(
-            UserManager<AppUser> userManager, 
-            SignInManager<AppUser> signInManager, 
-            IUserValidator<AppUser> userValidator, 
-            IPasswordValidator<AppUser> passwordValidator, 
-            IPasswordHasher<AppUser> passwordHasher)
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
+
+        public AccountApiController(UserManager<AppUser> userMgr, SignInManager<AppUser> signInMgr)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _userValidator = userValidator;
-            _passwordValidator = passwordValidator;
-            _passwordHasher = passwordHasher;
-        }
-        // GET: api/AccountApi
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
+            _userManager = userMgr;
+            _signInManager = signInMgr;
         }
 
-        // GET: api/AccountApi/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/AccountApi
         [HttpPost]
-        public void Post([FromBody] string value)
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginModel details, string returnUrl)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var user = await _userManager.FindByEmailAsync(details.Email);
+            if (user != null)
+            {
+                await _signInManager.SignOutAsync();
+                var result = await _signInManager.PasswordSignInAsync(user, details.Password, false, false);
+
+                if (result.Succeeded)
+                    return Ok(returnUrl ?? "/");
+            }
+
+            ModelState.AddModelError(nameof(LoginModel.Email), "Invalid user or password");
+
+            return BadRequest(ModelState);
         }
 
-        // PUT: api/AccountApi/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Logout()
         {
+            await _signInManager.SignOutAsync();
+            return Ok();
         }
 
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Logup(LogupModel model)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var user = new AppUser
+            {
+                UserName = model.Name,
+                Email = model.Email,
+            };
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
+            {
+                if (User?.Identity?.IsAuthenticated ?? false)
+                    await _signInManager.SignOutAsync();
+
+                await _userManager.AddToRoleAsync(user, "user");
+
+                await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
+                return Ok(user);
+            }
+            else
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError("", error.Description);
+            
+            return BadRequest(ModelState);
         }
     }
 }
