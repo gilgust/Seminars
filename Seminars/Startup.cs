@@ -5,6 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,7 +46,10 @@ namespace Seminars
             services.AddTransient<ISeminarChapterRepository, ChapterRepository>();
 
             services.AddMvc();
-            
+            services.AddRazorPages();
+            // services.AddControllersWithViews();
+
+            services.AddSpaStaticFiles(config => { config.RootPath = "ClientApp/build"; });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -49,12 +57,22 @@ namespace Seminars
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
                 app.UseStatusCodePages();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+            }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
+            app.UseRouting();
+
             app.UseAuthentication();
-            app.UseRouting(); // используем систему маршрутизации
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
                 {
@@ -68,8 +86,20 @@ namespace Seminars
                     endpoints.MapControllerRoute(
                         name: null,
                         pattern: "{controller=Home}/{action=Index}/{id?}");
+                    // endpoints.MapControllerRoute(
+                    //     name: "default",
+                    //     pattern: "{area:exists}/{controller}/{action=Index}/{id?}");
+                    endpoints.MapRazorPages();
                 });
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
 
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+            });
             // AppDbContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
         }
     }
