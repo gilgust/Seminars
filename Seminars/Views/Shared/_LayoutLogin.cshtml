@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Material Design Bootstrap</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <link asp-href-include="~/css/bootstrap.css" rel="stylesheet">
+    <link asp-href-include="~/css/mdb.css" rel="stylesheet">
+    <link asp-href-include="~/css/style.css" rel="stylesheet">
+    @RenderSection("Head", false)
+</head>
+
+<body>
+
+    <!--Main layout-->
+    <main class="pt-3 pb-5">
+        @RenderBody()
+    </main>
+    <!--Main layout-->
+    
+    <!-- SCRIPTS -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="~/lib/jquery/jquery.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-validate/jquery.validate.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script type="text/javascript" src="~/js/bootstrap.js"></script>
+    <script type="text/javascript" src="~/js/mdb.js"></script>
+    <script type="text/javascript">
+        // Animations initialization
+        new WOW().init();
+
+    </script>
+
+    @RenderSection("Footer", false)
+</body>
+
+</html>

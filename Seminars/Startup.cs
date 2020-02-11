@@ -37,8 +37,8 @@ namespace Seminars
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequireLowercase = false;
                 opt.Password.RequireUppercase = false;
-                opt.Password.RequireDigit= false;
-            }).AddEntityFrameworkStores<AppDbContext>()
+                opt.Password.RequireDigit= false; })
+                .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
             services.AddTransient<ISeminarRepository, SeminarRepository>();
@@ -46,8 +46,6 @@ namespace Seminars
             services.AddTransient<ISeminarChapterRepository, ChapterRepository>();
 
             services.AddMvc();
-            services.AddRazorPages();
-            // services.AddControllersWithViews();
 
             services.AddSpaStaticFiles(config => { config.RootPath = "ClientApp/build"; });
         }
@@ -60,11 +58,6 @@ namespace Seminars
                 app.UseDatabaseErrorPage();
                 app.UseStatusCodePages();
             }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                app.UseHsts();
-            }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -75,20 +68,18 @@ namespace Seminars
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
-                {
-                    endpoints.MapControllerRoute(
+            {
+                endpoints.MapControllerRoute(
+                    name: null,
+                    pattern: "Account/{action}",
+                    defaults: new { controller = "Account" });
+                endpoints.MapControllerRoute(
                         name: null,
                         pattern: "{area=Admin}/Role/{action=Index}",
                         defaults: new { controller = "RoleAdmin"});
                     endpoints.MapControllerRoute(
                         name: "areas",
                         pattern: "{area:exists}/{controller=HomeAdmin}/{action=Index}/{id?}");
-                    endpoints.MapControllerRoute(
-                        name: null,
-                        pattern: "{controller=Home}/{action=Index}/{id?}");
-                    // endpoints.MapControllerRoute(
-                    //     name: "default",
-                    //     pattern: "{area:exists}/{controller}/{action=Index}/{id?}");
                     endpoints.MapRazorPages();
                 });
             app.UseSpa(spa =>
@@ -96,11 +87,9 @@ namespace Seminars
                 spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())
-                {
                     spa.UseReactDevelopmentServer(npmScript: "start");
-                }
+                
             });
-            // AppDbContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
         }
     }
 }
