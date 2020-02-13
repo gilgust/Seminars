@@ -1,86 +1,46 @@
-﻿@model Seminar
+﻿@model EditSeminarModel
 @{
-    ViewBag.Title = $"Edit {Model.Name}";
+    ViewBag.Title = $"Edit {Model.Seminar.Name}";
     Layout = "_AdminLayout";
 }
 @section HeadSection{
     <link rel="stylesheet" asp-href-include="~/lib/froala-wysiwyg-editor/css/froala_editor.pkgd.min.css" />
 }
 
-<form asp-action="Edit" method="post" class="my-4">
-    <input type="hidden" asp-for="Id" />
+<form asp-action="Edit" method="post" class="row">
+    <input type="hidden" asp-for="@Model.Seminar.Id" />
 
-    <div class="card mb-2">
-        <div class="card-header">
-            <div class="form-group">
-                <input asp-for="Name" class="form-control" placeholder="name" />
-            </div>
-        </div>
-        <div class="card-body">
-            <!--Accordion wrapper-->
-            <div class="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
+    <div class="seminar-fields_main col-lg-9">
 
-                <div class="" role="tab" id="headingTwo1">
-                    <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseTwo1"
-                       aria-expanded="false" aria-controls="collapseTwo1">
-                        <label class="mb-0" asp-for="Slug"></label>
-                        <i class="fas fa-angle-down "></i>
-                    </a>
-                </div>
-                <div id="collapseTwo1" class="collapse" role="tabpanel" aria-labelledby="headingTwo1"
-                     data-parent="#accordionEx1">
-                    <div class="form-group">
-                        <input asp-for="Slug" class="form-control" />
-                    </div>
-                </div>
+        <input asp-for="@Model.Seminar.Name" class="form-control" placeholder="name" />
+        <label class="mb-0" asp-for="@Model.Seminar.Slug"></label>
+        <input asp-for="@Model.Seminar.Slug" class="form-control" />
+        <label class="mb-0" asp-for="@Model.Seminar.Excerpt"></label>
+        <textarea asp-for="@Model.Seminar.Excerpt" class="form-control" rows="5">@Model.Seminar.Excerpt</textarea>
+        <label class="mb-0" asp-for="@Model.Seminar.Content"></label>
+        <textarea id="edit" name="content" class="form-control">
+            @if (!string.IsNullOrWhiteSpace(Model.Seminar.Content))
+            {
+                @Html.Raw(Model.Seminar.Content)
+            }
+        </textarea>
 
-                <div class="" role="tab" id="headingTwo2">
-                    <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseTwo21"
-                       aria-expanded="false" aria-controls="collapseTwo21">
-                        <label class="mb-0" asp-for="Excerpt"></label>
-                        <i class="fas fa-angle-down "></i>
-                    </a>
-                </div>
-                <div id="collapseTwo21" class="collapse" role="tabpanel" aria-labelledby="headingTwo21"
-                     data-parent="#accordionEx1">
-                    <div class="">
-                        <div class="form-group">
-                            <textarea asp-for="Excerpt" class="form-control" rows="5">@Model.Excerpt</textarea>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="" role="tab" id="headingThree31">
-                    <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseThree31"
-                       aria-expanded="false" aria-controls="collapseThree31">
-                        <label class="mb-0" asp-for="Content"></label>
-                        <i class="fas fa-angle-down"></i>
-                    </a>
-                </div>
-                <div id="collapseThree31" class="collapse" role="tabpanel" aria-labelledby="headingThree31"
-                     data-parent="#accordionEx1">
-                    <div class="form-group m-5">
-                        <textarea id="edit" name="content" class="form-control">
-                        @if (!String.IsNullOrWhiteSpace(Model.Content))
-                        {
-                            @Html.Raw(Model.Content)
-                        }
-                    </textarea>
-                    </div>
-                </div>
-            </div>
-            <!-- Accordion wrapper -->
-        </div>
-        <div class="card-footer p-0">
-            <div class="text-center">
-                <div class="btn-group">
-                    <button class="btn btn-primary btn-sm" type="submit">Save</button>
-                    <a asp-action="Index" class="btn btn-info btn-sm">Cancel</a>
-                </div>
+
+    </div >
+    <div class="aside_right seminar-fields_additional col-lg-3">
+        <h3>additional settings</h3>
+    </div>
+
+    <div class="">
+        <div class="">
+            <div class="">
+                <button class="btn btn-primary btn-sm" type="submit">Save</button>
+                <a asp-action="Index" class="btn btn-info btn-sm">Cancel</a>
             </div>
         </div>
     </div>
-
+    
 
 </form>
 
@@ -94,9 +54,9 @@
 
     </div>
     <div class="card-body" id="partsWrapper">
-        @if (Model != null || Model.Parts.Any())
+        @if (Model.Seminar != null || Model.Seminar.Parts.Any())
         {
-            foreach (var part in Model.Parts.OrderBy(p => p.Order))
+            foreach (var part in Model.Seminar.Parts.OrderBy(p => p.Order))
             {
                 @Html.Partial("SeminarPartView", part)
             }
@@ -104,6 +64,8 @@
         }
     </div>
 </div>
+
+
 
 @Html.Partial("ModalSeminarPart")
 @Html.Partial("ModalSeminarChapter")

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace Seminars.Models
 {
@@ -23,11 +24,13 @@ namespace Seminars.Models
         [Display(Name = "содержание")]
         public string Content { get; set; }
 
+        public IEnumerable<IdentityRole> ForeRoles { get; set; }
         public IEnumerable<SeminarPart> Parts { get; set; }
 
         public Seminar()
         {
             Parts = new List<SeminarPart>();
+            ForeRoles = new List<IdentityRole>();
         }
     }
 }

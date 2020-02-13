@@ -45,7 +45,8 @@ namespace Seminars
             services.AddTransient<ISeminarPartRepository, SeminarPartRepository>();
             services.AddTransient<ISeminarChapterRepository, ChapterRepository>();
 
-            services.AddMvc();
+            services.AddMvc()
+                .AddRazorRuntimeCompilation();
 
             services.AddSpaStaticFiles(config => { config.RootPath = "ClientApp/build"; });
         }
@@ -72,7 +73,7 @@ namespace Seminars
                 endpoints.MapControllerRoute(
                     name: null,
                     pattern: "Account/{action}",
-                    defaults: new { controller = "Account" });
+                    defaults: new { controller = "Account", action = "Login" });
                 endpoints.MapControllerRoute(
                         name: null,
                         pattern: "{area=Admin}/Role/{action=Index}",

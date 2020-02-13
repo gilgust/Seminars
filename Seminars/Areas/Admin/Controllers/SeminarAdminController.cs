@@ -3,10 +3,12 @@ using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Seminars.Models;
 using Seminars.Repositories;
 using Seminars.infrastructure;
+using Seminars.ViewModel;
 
 namespace Seminars.Areas.Admin.Controllers
 {
@@ -14,15 +16,25 @@ namespace Seminars.Areas.Admin.Controllers
     public class SeminarAdminController : Controller
     {
         private readonly ISeminarRepository _repository;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public SeminarAdminController(ISeminarRepository repository) => _repository = repository;
+        public SeminarAdminController(ISeminarRepository repository, RoleManager<IdentityRole> roleManager)
+        {
+            _repository = repository;
+            _repository = repository;
+        }
+
         public ViewResult Index() => View(_repository.Seminars.ToList());
         
 
         public ViewResult Edit(int seminarId)
         {
-            var dbEntity = _repository.SeminarById(seminarId);
-            return View( dbEntity);
+            var editModel = new EditSeminarModel
+            {
+                Seminar = _repository.SeminarById(seminarId),
+                ForRoles = _roleManager.Roles
+            };
+            return View( editModel);
         }
 
         [HttpPost]  

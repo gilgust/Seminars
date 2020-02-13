@@ -25,6 +25,8 @@ namespace Seminars.Controllers
         [AllowAnonymous]
         public IActionResult Login(string returnUrl)
         {
+            if (_signInManager.IsSignedIn(User)) return Redirect(returnUrl);
+
             ViewBag.returnUrl = returnUrl;
             return View();
         }
