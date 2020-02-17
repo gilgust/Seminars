@@ -24,13 +24,13 @@ namespace Seminars.Models
         [Display(Name = "содержание")]
         public string Content { get; set; }
 
-        public IEnumerable<IdentityRole> ForeRoles { get; set; }
+        public IEnumerable<SeminarRole> SeminarRoles { get; set; }
         public IEnumerable<SeminarPart> Parts { get; set; }
 
         public Seminar()
         {
             Parts = new List<SeminarPart>();
-            ForeRoles = new List<IdentityRole>();
+            SeminarRoles = new List<SeminarRole>();
         }
     }
 }

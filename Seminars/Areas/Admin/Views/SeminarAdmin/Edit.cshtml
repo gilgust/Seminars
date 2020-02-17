@@ -1,4 +1,4 @@
-﻿@model EditSeminarModel
+﻿@model EditSeminarViewModel
 @{
     ViewBag.Title = $"Edit {Model.Seminar.Name}";
     Layout = "_AdminLayout";
@@ -28,8 +28,19 @@
 
 
     </div >
-    <div class="aside_right seminar-fields_additional col-lg-3">
+    <div class="aside_right seminar-fields_additional col-lg-3 d-flex flex-column">
         <h3>additional settings</h3>
+
+        @foreach (var role in Model.Roles)
+        {
+            var checkedFlag = Model.Seminar.SeminarRoles.Any(sr => sr.RoleId == role.Id) ? "checked" : "";
+
+            <label>
+                <input type="checkbox" name="SelectedRoles" value="@role.Id" @checkedFlag />
+                <span>@role.Name</span>
+            </label>
+
+        }
     </div>
 
     <div class="">

@@ -9,6 +9,7 @@ namespace Seminars.Repositories
     {
         IQueryable<Seminar> Seminars { get; }
         void SaveSeminar(Seminar seminar);
+        Task<string> SaveSeminar(Seminar seminar, string[] selectedRoles);
         Seminar DeleteSeminar(int seminarId);
         Seminar SeminarBySlug(string slug);
         Seminar SeminarById(int id);

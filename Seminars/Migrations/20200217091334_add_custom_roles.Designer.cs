@@ -10,8 +10,8 @@ using Seminars.Repositories;
 namespace Seminars.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200213110515_add_roles_to_seminar")]
-    partial class add_roles_to_seminar
+    [Migration("20200217091334_add_custom_roles")]
+    partial class add_custom_roles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,6 +30,10 @@ namespace Seminars.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
@@ -38,9 +42,6 @@ namespace Seminars.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<int?>("SeminarId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
@@ -48,9 +49,9 @@ namespace Seminars.Migrations
                         .HasName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.HasIndex("SeminarId");
-
                     b.ToTable("AspNetRoles");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -320,11 +321,26 @@ namespace Seminars.Migrations
                     b.ToTable("SeminarParts");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+            modelBuilder.Entity("Seminars.Models.SeminarRole", b =>
                 {
-                    b.HasOne("Seminars.Models.Seminar", null)
-                        .WithMany("ForeRoles")
-                        .HasForeignKey("SeminarId");
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("SeminarId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoleId", "SeminarId");
+
+                    b.HasIndex("SeminarId");
+
+                    b.ToTable("SeminarRole");
+                });
+
+            modelBuilder.Entity("Seminars.Models.AppRole", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
+
+                    b.HasDiscriminator().HasValue("AppRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -391,6 +407,21 @@ namespace Seminars.Migrations
                 {
                     b.HasOne("Seminars.Models.Seminar", "Seminar")
                         .WithMany("Parts")
+                        .HasForeignKey("SeminarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Seminars.Models.SeminarRole", b =>
+                {
+                    b.HasOne("Seminars.Models.AppRole", "Role")
+                        .WithMany("SeminarRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Seminars.Models.Seminar", "Seminar")
+                        .WithMany("SeminarRoles")
                         .HasForeignKey("SeminarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

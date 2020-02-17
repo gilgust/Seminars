@@ -42,7 +42,7 @@ footer {
     display: none;
     position: absolute;
     left: 0;
-    top: 50%;
+    top: 100px;
     z-index: 22222222;
 }
 .btn#toggles-sidebar-btn {

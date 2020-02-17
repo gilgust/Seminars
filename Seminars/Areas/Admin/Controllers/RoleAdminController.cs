@@ -16,15 +16,18 @@ namespace Seminars.Areas.Admin.Controllers
     // [Authorize(Roles = "admin")]
     public class RoleAdminController : Controller
     {
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<AppRole> _roleManager;
         private readonly UserManager<AppUser> _userManager;
-        public RoleAdminController(RoleManager<IdentityRole> roleMgr, UserManager<AppUser> userMgr)
+        public RoleAdminController(RoleManager<AppRole> roleMgr, UserManager<AppUser> userMgr)
         {
             _roleManager = roleMgr;
             _userManager = userMgr;
-        } 
+        }
 
-        public ViewResult Index() => View(_roleManager.Roles);
+        public ViewResult Index() {
+            var roles = _roleManager.Roles;
+            return View(roles);
+        }
         public IActionResult Create() => View();
 
         [HttpPost]
@@ -32,7 +35,7 @@ namespace Seminars.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _roleManager.CreateAsync(new IdentityRole(name));
+                var result = await _roleManager.CreateAsync(new AppRole(name));
                 if (result.Succeeded)
                     return RedirectToAction(nameof(Index));
                 else 

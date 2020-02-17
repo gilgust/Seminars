@@ -11,14 +11,18 @@ using Seminars.ViewModel;
 namespace Seminars.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "admin")]
+    //[Authorize(Roles = "admin")]
     public class HomeAdminController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IUserValidator<AppUser> _userValidator;
         private readonly IPasswordValidator<AppUser> _passwordValidator;
         private readonly IPasswordHasher<AppUser> _passwordHasher;
-        public HomeAdminController(UserManager<AppUser> usMgr, IUserValidator<AppUser> userValidator, IPasswordValidator<AppUser> passwordValidator, IPasswordHasher<AppUser> passwordHasher)
+        public HomeAdminController(
+            UserManager<AppUser> usMgr, 
+            IUserValidator<AppUser> userValidator, 
+            IPasswordValidator<AppUser> passwordValidator, 
+            IPasswordHasher<AppUser> passwordHasher)
         {
             _userManager = usMgr;
             _userValidator = userValidator;

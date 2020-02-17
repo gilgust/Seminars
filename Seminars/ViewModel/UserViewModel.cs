@@ -29,7 +29,7 @@ namespace Seminars.ViewModel
 
     public class RoleEditModel
     {
-        public IdentityRole Role { get; set; }
+        public AppRole Role { get; set; }
         public IEnumerable<AppUser> Members { get; set; }
         public IEnumerable<AppUser> NonMembers { get; set; }
     }

@@ -16,12 +16,12 @@ namespace Seminars.Areas.Admin.Controllers
     public class SeminarAdminController : Controller
     {
         private readonly ISeminarRepository _repository;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<AppRole> _roleManager;
 
-        public SeminarAdminController(ISeminarRepository repository, RoleManager<IdentityRole> roleManager)
+        public SeminarAdminController(ISeminarRepository repository, RoleManager<AppRole> roleManager)
         {
             _repository = repository;
-            _repository = repository;
+            _roleManager = roleManager;
         }
 
         public ViewResult Index() => View(_repository.Seminars.ToList());
@@ -29,25 +29,33 @@ namespace Seminars.Areas.Admin.Controllers
 
         public ViewResult Edit(int seminarId)
         {
-            var editModel = new EditSeminarModel
+            var editModel = new EditSeminarViewModel
             {
                 Seminar = _repository.SeminarById(seminarId),
-                ForRoles = _roleManager.Roles
+                Roles = _roleManager.Roles
             };
             return View( editModel);
         }
 
         [HttpPost]  
-        public IActionResult Edit(Seminar seminar)
+        public async Task<IActionResult> Edit(EditSeminarViewModel model)
         {
-            if (seminar.Id != 0 && !ModelState.IsValid) return View(seminar);
+            if (model.Seminar.Id != 0 && !ModelState.IsValid) 
+                return View(new EditSeminarViewModel { Seminar = model.Seminar , Roles = _roleManager.Roles } );
 
-            _repository.SaveSeminar(seminar);
-            TempData["message"] = $"{seminar.Name} has been saved";
+
+            var result = await _repository.SaveSeminar(model.Seminar, model.SelectedRoles);
             return RedirectToAction(nameof(Index));
         }
 
-        public ViewResult Create() => View(nameof(Edit), new Seminar());
+        public ViewResult Create() => 
+            View(
+                nameof(Edit), 
+                new EditSeminarViewModel
+                {
+                    Seminar = new Seminar(), 
+                    Roles = _roleManager.Roles
+                });
 
         [HttpPost]
         public IActionResult Delete(int seminarId)

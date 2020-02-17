@@ -18,7 +18,7 @@ namespace Seminars.Repositories
         public static async Task CreateAdminAccount(IServiceProvider serviceProvider, IConfiguration configuration)
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<AppRole>>();
 
             var userName = configuration["Data:AdminUser:Name"];
             var email = configuration["Data:AdminUser:Email"];
@@ -28,7 +28,7 @@ namespace Seminars.Repositories
             if (await userManager.FindByNameAsync(userName) == null)
             {
                 if (await roleManager.FindByNameAsync(role) == null)
-                    await roleManager.CreateAsync(new IdentityRole(role));
+                    await roleManager.CreateAsync(new AppRole(role));
 
                 var user = new AppUser {
                     UserName = userName,
@@ -45,6 +45,26 @@ namespace Seminars.Repositories
         public virtual DbSet<Seminar> Seminars { get; set; }
         public virtual DbSet<SeminarPart> SeminarParts { get; set; }
         public DbSet<FileModel> Files{ get; set; }
-        public DbSet<Seminars.Models.SeminarChapter> SeminarChapter { get; set; }
+        public DbSet<SeminarChapter> SeminarChapter { get; set; }
+        public DbSet<AppRole> Roles { get; set; }
+        public DbSet<SeminarRole> SeminarRoles { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<SeminarRole>().HasKey(sr => new { sr.RoleId, sr.SeminarId });
+
+            modelBuilder.Entity<SeminarRole>()
+                .HasOne(sr => sr.Role)
+                .WithMany(sr => sr.SeminarRoles)
+                .HasForeignKey(sr => sr.RoleId);
+
+
+            modelBuilder.Entity<SeminarRole>()
+                .HasOne(sr => sr.Seminar)
+                .WithMany(sr => sr.SeminarRoles)
+                .HasForeignKey(sc => sc.SeminarId);
+        }
     }
 }

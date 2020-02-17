@@ -29,10 +29,61 @@ namespace Seminars.Repositories
             {
                 var dbEntity = _context.Seminars.FirstOrDefault(s => s.Id == seminar.Id);
                 if (dbEntity != null)
+                {
+                    _context.Entry(dbEntity).State = EntityState.Detached;
                     _context.Entry(seminar).State = EntityState.Modified;
+                }
+                    
             }
             _context.SaveChanges();
         }
+ 
+        public async Task<string> SaveSeminar(Seminar seminar, string[] selectedRoles)
+        {
+            //generate slug if isn't exist
+            seminar.Slug = AvailableSlug(seminar);
+
+            if (seminar.Id == 0)
+            {
+                _context.Seminars.Add(seminar);
+                await _context.SaveChangesAsync();
+
+                foreach (var roleId in selectedRoles)
+                    _context.SeminarRoles.Add(new SeminarRole { SeminarId = seminar.Id, RoleId = roleId });
+            }
+            else
+            {
+                var dbEntity = _context.Seminars.Include(s => s.SeminarRoles).FirstOrDefault(s => s.Id == seminar.Id);
+                if (dbEntity != null)
+                {
+                    _context.Entry(dbEntity).State = EntityState.Detached;
+                    _context.Entry(seminar).State = EntityState.Modified;
+
+                    foreach (var dbSeminarRole in dbEntity.SeminarRoles)
+                        if (!selectedRoles.Any(r => r == dbSeminarRole.RoleId))
+                            _context.SeminarRoles.Remove(dbSeminarRole);
+
+                    foreach (var roleId in selectedRoles)
+                        if (!dbEntity.SeminarRoles.Any(sr => sr.RoleId == roleId))
+                            _context.SeminarRoles.Add(new SeminarRole { SeminarId = seminar.Id, RoleId = roleId });
+                }
+            }
+
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!SeminarExists(seminar.Id))
+                    return "error";
+                else
+                    throw;
+            }
+            return "saved";
+        }
+
         public Seminar DeleteSeminar(int seminarId)
         {
             var dbEntity = _context.Seminars.FirstOrDefault(s => s.Id == seminarId);
@@ -46,18 +97,18 @@ namespace Seminars.Repositories
         }
         public Seminar SeminarBySlug(string slug) =>
             _context.Seminars
-                .Where(s => s.Slug == slug)
-                .Include(s => s.ForeRoles)
-                .Include(s => s.Parts)
-                .ThenInclude(p => p.Chapters)
-                .FirstOrDefault();
+            .Where(s => s.Slug == slug)
+            .Include(s => s.SeminarRoles).ThenInclude(sr => sr.Role)
+            .Include(s => s.Parts)
+            .ThenInclude(p => p.Chapters)
+            .FirstOrDefault();
         public Seminar SeminarById(int id) =>
             _context.Seminars
-                .Where(s => s.Id == id)
-                .Include(s => s.ForeRoles)
-                .Include(s => s.Parts)
-                .ThenInclude(p => p.Chapters)
-                .FirstOrDefault(s => s.Id == id);
+            .Where(s => s.Id == id)
+            .Include(s => s.SeminarRoles).ThenInclude(sr => sr.Role)
+            .Include(s => s.Parts)
+            .ThenInclude(p => p.Chapters)
+            .FirstOrDefault(s => s.Id == id);
 
 
         #endregion
@@ -150,5 +201,6 @@ namespace Seminars.Repositories
             }
             return uniqueSlug;
         }
+
     }
 }

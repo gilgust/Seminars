@@ -32,7 +32,7 @@ namespace Seminars
                   // options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
                   options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<AppUser, IdentityRole>(opt =>{
+            services.AddIdentity<AppUser, AppRole>(opt =>{
                 opt.Password.RequiredLength = 2;
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequireLowercase = false;

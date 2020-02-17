@@ -13,9 +13,9 @@ namespace Seminars.infrastructure
     public class RoleUsersTagHelper : TagHelper
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<AppRole> _roleManager;
 
-        public RoleUsersTagHelper(UserManager<AppUser> userMgr, RoleManager<IdentityRole> roleMgr)
+        public RoleUsersTagHelper(UserManager<AppUser> userMgr, RoleManager<AppRole> roleMgr)
         {
             _userManager = userMgr;
             _roleManager = roleMgr;
