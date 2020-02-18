@@ -14,7 +14,7 @@ $("#saveSeminarPart").on("submit", saveSeminarPartBtnHandler);
 $(".delete-part-btn").on("click", deletePartPartBtnHandler);
 
 $("#centralModalFluidSuccessDemo").on("show.bs.modal", function () {
-    let seminarId = $("#Id").val();
+    const seminarId = $("#Id").val();
     $("#parent-of-part").val(seminarId);
 });
 $("#centralModalFluidSuccessDemo").on("hidden.bs.modal",function () {
