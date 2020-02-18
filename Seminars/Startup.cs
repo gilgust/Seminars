@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -14,9 +15,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Seminars.Areas.Admin.Controllers;
 using Seminars.Models;
 using Seminars.Repositories;
+using Seminars.security;
 
 namespace Seminars
 {
@@ -40,6 +43,20 @@ namespace Seminars
                 opt.Password.RequireDigit= false; })
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(opt =>{
+                    opt.RequireHttpsMetadata = false;
+                    opt.TokenValidationParameters = new TokenValidationParameters{
+                        ValidateIssuer = true,
+                        ValidIssuer = AuthOptions.ISSUER,
+                        ValidateAudience = true,
+                        ValidAudience = AuthOptions.AUDIENCE,
+                        ValidateLifetime = true,
+                        IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                        ValidateIssuerSigningKey = true
+                    };
+                });
 
             services.AddTransient<ISeminarRepository, SeminarRepository>();
             services.AddTransient<ISeminarPartRepository, SeminarPartRepository>();
@@ -72,8 +89,8 @@ namespace Seminars
             {
                 endpoints.MapControllerRoute(
                     name: null,
-                    pattern: "Account/{action}",
-                    defaults: new { controller = "Account", action = "Login" });
+                    pattern: "Account/{action=Login}",
+                    defaults: new { controller = "Account" });
                 endpoints.MapControllerRoute(
                         name: null,
                         pattern: "{area=Admin}/Role/{action=Index}",
