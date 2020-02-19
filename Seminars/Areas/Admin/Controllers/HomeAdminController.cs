@@ -123,6 +123,8 @@ namespace Seminars.Areas.Admin.Controllers
             return View(user);
         }
 
+        public ViewResult TestToken() => View();
+
         private void AddErrorsFromResult(IdentityResult result)
         {
             foreach (var error in result.Errors)

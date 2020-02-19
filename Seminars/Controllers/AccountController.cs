@@ -27,7 +27,7 @@ namespace Seminars.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult Login(string returnUrl)
+        public IActionResult Login(string returnUrl = null)
         {
             if (_signInManager.IsSignedIn(User)) return Redirect(returnUrl);
 
@@ -61,16 +61,24 @@ namespace Seminars.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return Redirect("/");
+
+
+            // return RedirectToAction("Index", "Home", new { area = "" });
         }
 
         [AllowAnonymous]
-        public ViewResult Logup() => View();
+        public ViewResult Logup(string returnUrl)
+        {
+            ViewBag.returnUrl = returnUrl;
+            return View();
+        }
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Logup(LogupModel model)
+        public async Task<IActionResult> Logup(LogupModel model, string returnUrl)
         {
+             ViewBag.returnUrl = returnUrl;
             if (ModelState.IsValid)
             {
                 var user = new AppUser
@@ -119,17 +127,11 @@ namespace Seminars.Controllers
 
         //test jwt (lack a big dady)
 
-
-        private List<Person> people = new List<Person>
-        {
-            new Person {Login="admin@gmail.com", Password="12345", Role = "admin" },
-            new Person { Login="qwerty@gmail.com", Password="55555", Role = "user" }
-        };
-
         [HttpPost("/token")]
+        [AllowAnonymous]
         public IActionResult Token(string username, string password)
         {
-            var identity = getIdentity(username, password);
+            var identity = GetIdentityAsync(username, password).Result;
             if (identity == null)
                 return BadRequest(new {errorText = "Invalid username or password"});
 
@@ -142,6 +144,7 @@ namespace Seminars.Controllers
                 claims:identity.Claims,
                 expires:now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
                 signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             var response = new
@@ -153,31 +156,21 @@ namespace Seminars.Controllers
             return Json(response);
         }
 
-        private ClaimsIdentity getIdentity(string username, string password)
+        private async Task<ClaimsIdentity> GetIdentityAsync(string username, string password)
         {
-            var person = people.FirstOrDefault(x => x.Login == username && x.Password == password);
+            var user = await _userManager.FindByEmailAsync(username);
+            if (user == null) return null;
 
-            if (people == null) return null;
+            await _signInManager.SignOutAsync();
+            var result = await _signInManager.PasswordSignInAsync(user, password, false, false);
 
-            var claims = new List<Claim>{
-                new Claim(ClaimsIdentity.DefaultNameClaimType, person.Login),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, person.Role)};
-
-            var claimsIdentity = new ClaimsIdentity(
-                claims, 
-                "Token", 
-                ClaimsIdentity.DefaultNameClaimType,
-                ClaimsIdentity.DefaultRoleClaimType);
-
-            return claimsIdentity;
-
+            return result.Succeeded 
+                ? new ClaimsIdentity(
+                    User.Claims,
+                    "Token",
+                    ClaimsIdentity.DefaultNameClaimType,
+                    ClaimsIdentity.DefaultRoleClaimType)
+                : null;
         }
-    }
-
-    public class Person
-    {
-        public string Login { get; set; }
-        public string Password { get; set; }
-        public string Role { get; set; }
     }
 }

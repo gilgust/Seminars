@@ -13,7 +13,7 @@
                     </h5>
                     <div class="card-body px-lg-5 pt-0">
                         <div asp-validation-summary="All" class="text-danger"></div>
-                        <form asp-action="Login" method="post" class="text-center" style="color: #757575;">
+                        <form asp-action="Login" asp-route-returnUrl="@ViewBag.returnUrl" method="post" class="text-center" style="color: #757575;">
                             
                             <div class="md-form">
                                 <label asp-for="Email"></label>
@@ -25,9 +25,9 @@
                                 <span asp-validation-for="Password"></span>
                                 <input asp-for="Password" class="form-control"/>
                             </div>
-                            
+                            <p>ViewBag.returnUrl @ViewBag.returnUrl</p>
                             <button type="submit" class="btn btn-outline-info my-4 waves-effect">Log In</button>
-                            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary my-4 waves-effect text-center">Cancel</a>
+                            <a href="@ViewBag.returnUrl" class="btn btn-outline-secondary my-4 waves-effect text-center">Cancel</a>
 
                         </form>
                     </div>

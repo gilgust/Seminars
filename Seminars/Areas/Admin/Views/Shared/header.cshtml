@@ -7,24 +7,42 @@
 <!--Main Navigation-->
 
         <!-- Navbar -->
-        <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar admin-navbar">
-            <div class="container-fluid">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar admin-navbar">
+        <div class="container-fluid">
 
-                <!-- Collapse -->
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+            <!-- Collapse -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                <!-- Links -->
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Links -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-                    <!-- Left -->
-                  @Html.Partial("Menu")
+                <!-- Left -->
+                @Html.Partial("Menu")
 
-                </div>
             </div>
-        </nav>
+        </div>
+
+        <div class="d-flex justify-content-end align-items-center">
+            @if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                <span class="text-center"> @User.Identity.Name</span>
+            }
+            <div class="btn-group ">
+                @if (User?.Identity?.IsAuthenticated ?? false)
+                {
+                    <a asp-controller="Account" asp-action="Logout" class="btn btn-secondary btn-sm">logOut</a>
+                }
+                else
+                {
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-primary btn-sm">logIn</a>
+                    <a asp-controller="Account" asp-action="Logup" class="btn btn-primary btn-sm">SignUp</a>
+                }
+            </div>
+        </div>
+    </nav>
         <!-- Navbar -->
         <!-- Sidebar -->
         @Html.Partial("Aside")

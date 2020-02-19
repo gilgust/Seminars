@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Seminars.Areas.Admin.Controllers
+namespace Seminars.Areas.Api.Controllers
 {
     [ApiController]
+    [Route("api/[controller]")]
     public class TestTokenController : Controller
     {
         [Authorize]
