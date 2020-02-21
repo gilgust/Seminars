@@ -35,27 +35,8 @@ async function getTokenAsync() {
         console.log("Error: ", response.status, data.errorText);
     }
 }
-//async function f() {
-//    console.log("emailLogin", document.getElementById("emailLogin").value);
-//    console.log("passwordLogin", document.getElementById("passwordLogin").value);
-//
-//    const formData = new FormData();
-//    formData.set("grant_type", "password");
-//    formData.set("username", document.getElementById("emailLogin").value);
-//    formData.set("password", document.getElementById("passwordLogin").value);
-//
-//    console.log("formData", formData);
-//    console.log("formData username: ", formData.get("username"));
-//    console.log("formData password: ", formData.get("password"));
-//
-//    const response = await fetch("/token", {
-//        method: "POST",
-//        headers: { "Accept": "application/json" },
-//        body: formData
-//    });
-//
-//    console.log("response : ", response);
-//}
+
+
 // отправка запроса к контроллеру ValuesController
 async function getData(url) {
     const token = sessionStorage.getItem(tokenKey);

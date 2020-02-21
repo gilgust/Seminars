@@ -20,31 +20,15 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                 <!-- Left -->
-                @Html.Partial("Menu")
+                @await Html.PartialAsync("_Menu")
 
             </div>
         </div>
+        @await Html.PartialAsync("_LoginView")
 
-        <div class="d-flex justify-content-end align-items-center">
-            @if (User?.Identity?.IsAuthenticated ?? false)
-            {
-                <span class="text-center"> @User.Identity.Name</span>
-            }
-            <div class="btn-group ">
-                @if (User?.Identity?.IsAuthenticated ?? false)
-                {
-                    <a asp-controller="Account" asp-action="Logout" class="btn btn-secondary btn-sm">logOut</a>
-                }
-                else
-                {
-                    <a asp-controller="Account" asp-action="Login" class="btn btn-primary btn-sm">logIn</a>
-                    <a asp-controller="Account" asp-action="Logup" class="btn btn-primary btn-sm">SignUp</a>
-                }
-            </div>
-        </div>
     </nav>
         <!-- Navbar -->
         <!-- Sidebar -->
-        @Html.Partial("Aside")
+        @await Html.PartialAsync("_Aside")
         <!-- Sidebar -->
 <!--Main Navigation-->

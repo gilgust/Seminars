@@ -16,7 +16,7 @@
 </head>
 
 <body class="grey lighten-3 admin-body">
-@Html.Partial("Header")
+@await Html.PartialAsync("_Header")
 <!--Main layout-->
 <main class=" mx-lg-5 admin-main">
     @RenderBody()

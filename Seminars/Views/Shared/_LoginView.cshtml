@@ -1,0 +1,21 @@
+﻿@{
+    var returnUrl = Context.Request.Path.ToString();
+}
+<div class="d-flex justify-content-end align-items-center">
+    @if (User?.Identity?.IsAuthenticated ?? false)
+    {
+        <span class="text-center"> @User.Identity.Name</span>
+    }
+    <div class="btn-group ">
+        @if (User?.Identity?.IsAuthenticated ?? false)
+        {
+            <a asp-controller="Account" asp-action="Logout" class="btn btn-secondary btn-sm">log out</a>
+        }
+        else
+        {
+            <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@returnUrl" class="btn btn-primary btn-sm">logIn</a>
+            <a asp-controller="Account" asp-action="Logup" asp-route-returnUrl="@returnUrl" class="btn btn-primary btn-sm">SignUp</a>
+        }
+    </div>
+</div>
+
